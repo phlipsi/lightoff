@@ -49,3 +49,6 @@ play_bounce::
     ld [rAUD1HIGH], a
 
     ret
+
+play_next_eighth::
+    jr play_bounce
