@@ -6,14 +6,15 @@ GFX="$(RGBDS)\rgbgfx.exe"
 
 .SUFFIXES: .o .asm .png .bin
 
-lightoff.gb: header.o main.o sound.o tileset.o utils.o intro.o
+lightoff.gb: header.o main.o sound.o tilesetoff.o utils.o intro.o joypad.o
 	$(LINK) -o $@ -n $*.sym $**
 	$(FIX) -v -p0 $@
 
 .asm.o:
 	$(ASM) -i hardware -o $@ $**
 
-tileset.asm: tileset.bin
+tileseton.asm: lighton.bin
+tilesetoff.asm: lightoff.bin
 intro.asm: intro.tilemap
 
 .png.bin:

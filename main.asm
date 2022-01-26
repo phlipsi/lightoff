@@ -1,7 +1,7 @@
 INCLUDE "hardware.inc"
 
 ; 4kHz = 4000Hz
-; 240bpm = 4Hz
+; 240bpm = 4Hz (60bpm = 1Hz)
 ; 4000Hz / 4Hz = 1000 = 2 * 2 * 2 * 5 * 5 * 5 = 40 * 25
 ;              = (256 - 216) * 25 = (256 - $d8) * $19
 DEF TIMER_MOD EQU $d8
@@ -15,9 +15,10 @@ SECTION "LIGHTOFF", ROM0
 
 start::
     call init_timer
-    call load_screen
     call init_sound
-    call play_bounce
+    call init_lcd
+    call intro
+
 .loop:
     jr .loop
 
@@ -27,27 +28,70 @@ wait_vblank:
     jr c, wait_vblank
     ret
 
-clear_bg_map:
-    ld hl, _SCRN1
+init_lcd:
+    call wait_vblank
+    ; Initialize LCD control
+    ld hl, rLCDC
+    ld [hl], LCDCF_OFF | LCDCF_WIN9800 | LCDCF_WINOFF | LCDCF_BG8000 | LCDCF_BG9800 | LCDCF_OBJ8 | LCDCF_OBJOFF | LCDCF_BGON
+    ; Initialize background palette
+    ld hl, rBGP
+    ld [hl], %11100100
+    ; clear background
+    ld hl, _SCRN0
     ld d, 0
     ld bc, $400
     jp fill_memory
 
-load_screen:
+intro:
+    call load_tileset_off
+    call load_intro_tilemap
+    call lcd_on
+    call wait_until_keypress
+    call fade_out
+    ret
+
+lcd_off:
     call wait_vblank
     ld hl, rLCDC
-    ; LCD off
     res 7, [hl]
+    ret
 
-    ld hl, rBGP
-    ld [hl], %11100100
-
-    call load_tiles
-    call load_intro_tilemap
-
+lcd_on:
     ld hl, rLCDC
-    ld [hl], LCDCF_ON | LCDCF_WIN9800 | LCDCF_WINOFF | LCDCF_BG8000 | LCDCF_BG9800 | LCDCF_OBJ8 | LCDCF_OBJOFF | LCDCF_BGON
+    set 7, [hl]
+    ret
 
+fade_out:
+    ld b, 60
+    call wait_b_frames
+    call wait_vblank
+    ld a, %11111001
+    ld [rBGP], a
+
+    ld b, 60
+    call wait_b_frames
+    call wait_vblank
+    ld a, %11111110
+    ld [rBGP], a
+
+    ld b, 60
+    call wait_b_frames
+    call wait_vblank
+    ld a, %11111111
+    ld [rBGP], a
+
+    ret
+
+wait_b_frames:
+    dec b
+    ret z
+    call wait_next_frame
+    jr wait_b_frames
+
+wait_next_frame:
+    ld a, [rLY]
+    or a
+    jr nz, wait_next_frame
     ret
 
 init_timer:
