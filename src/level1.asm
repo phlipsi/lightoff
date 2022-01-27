@@ -23,9 +23,15 @@ load_level1_off_tilemap:
     jp copy_memory
 
 level1::
-    call load_tileset_on
-    call load_level1_on_tilemap
+    ld de, level1_on
+    ld bc, level1_on_end - level1_on
+    call load_to_screen
 
+    call load_tileset_on
+    call display_screen
+
+    ld bc, $0810
+    call init_player
     call draw_player
 
     jp fade_in

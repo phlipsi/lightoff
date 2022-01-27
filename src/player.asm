@@ -7,6 +7,8 @@ PLAYER_Y: DS 1
 
 section "PLAYER", rom0
 
+; b - x coordinate
+; c - y coordinate
 init_player::
     ld a, 8
     ld [PLAYER_X], a
@@ -14,8 +16,6 @@ init_player::
     ld [PLAYER_Y], a
     ret
 
-; b - x coordinate
-; c - y coordinate
 draw_player::
     ld hl, _OAMRAM
     ld a, [PLAYER_Y]

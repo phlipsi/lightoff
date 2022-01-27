@@ -17,7 +17,6 @@ start::
     call init_timer
     call init_sound
     call init_lcd
-    call init_player
     call intro
     call level1
 

@@ -22,6 +22,7 @@ build build/header.o: asm src/header.asm
 build build/level1.o: asm src/level1.asm | assets/level1-on.tilemap assets/level1-off.tilemap
 build build/main.o: asm src/main.asm
 build build/player.o: asm src/player.asm
+build build/screen.o: asm src/screen.asm
 build build/sound.o: asm src/sound.asm
 build build/tilesetoff.o: asm src/tilesetoff.asm | build/lightoff.bin
 build build/tileseton.o: asm src/tileseton.asm | build/lighton.bin
@@ -34,6 +35,7 @@ build build/lightoff.gb: link $
     build/level1.o $
     build/main.o $
     build/player.o $
+    build/screen.o $
     build/sound.o $
     build/tilesetoff.o $
     build/tileseton.o $
