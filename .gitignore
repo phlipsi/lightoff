@@ -9,3 +9,4 @@
 *.bin
 *.sym
 /.vscode/
+/.ninja_log

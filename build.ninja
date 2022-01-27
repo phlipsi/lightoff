@@ -1,0 +1,39 @@
+rgbds = C:/Program Files/RGBDS
+rgbasm = $rgbds/rgbasm.exe
+rgblink = $rgbds/rgblink.exe
+rgbfix = $rgbds/rgbfix.exe
+rgbgfx = $rgbds/rgbgfx.exe
+flags = -i assets -i hardware -i build
+fix_flags = -p0 -v
+
+rule asm
+    command = $rgbasm $flags -o $out $in
+
+rule link
+    command = cmd /c ""$rgblink" -o $out -n $symbol $in && "$rgbfix" $fix_flags $out"
+    description = linking $out
+
+rule gfx
+    command = $rgbgfx -o $out $in
+
+build build/intro.o: asm src/intro.asm
+build build/joypad.o: asm src/joypad.asm
+build build/header.o: asm src/header.asm
+build build/main.o: asm src/main.asm
+build build/sound.o: asm src/sound.asm
+build build/tilesetoff.o: asm src/tilesetoff.asm | build/lightoff.bin
+build build/utils.o: asm src/utils.asm
+
+build build/lightoff.gb: link $
+    build/intro.o $
+    build/joypad.o $
+    build/header.o $
+    build/main.o $
+    build/sound.o $
+    build/tilesetoff.o $
+    build/utils.o
+    symbol = build/lightoff.sym
+
+build build/lightoff.bin: gfx assets/lightoff.png
+
+#build build/lightoff.gb: fix build/lightoff.gb
