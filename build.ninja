@@ -19,21 +19,24 @@ rule gfx
 build build/intro.o: asm src/intro.asm
 build build/joypad.o: asm src/joypad.asm
 build build/header.o: asm src/header.asm
+build build/level1.o: asm src/level1.asm | assets/level1-on.tilemap assets/level1-off.tilemap
 build build/main.o: asm src/main.asm
 build build/sound.o: asm src/sound.asm
 build build/tilesetoff.o: asm src/tilesetoff.asm | build/lightoff.bin
+build build/tileseton.o: asm src/tileseton.asm | build/lighton.bin
 build build/utils.o: asm src/utils.asm
 
 build build/lightoff.gb: link $
     build/intro.o $
     build/joypad.o $
     build/header.o $
+    build/level1.o $
     build/main.o $
     build/sound.o $
     build/tilesetoff.o $
+    build/tileseton.o $
     build/utils.o
     symbol = build/lightoff.sym
 
 build build/lightoff.bin: gfx assets/lightoff.png
-
-#build build/lightoff.gb: fix build/lightoff.gb
+build build/lighton.bin: gfx assets/lighton.png

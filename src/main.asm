@@ -18,6 +18,7 @@ start::
     call init_sound
     call init_lcd
     call intro
+    call level1
 
 .loop:
     jr .loop
@@ -65,21 +66,42 @@ fade_out:
     ld b, 60
     call wait_b_frames
     call wait_vblank
-    ld a, %11111001
+    ld a, %10010000
     ld [rBGP], a
 
     ld b, 60
     call wait_b_frames
     call wait_vblank
-    ld a, %11111110
+    ld a, %01000000
     ld [rBGP], a
 
     ld b, 60
     call wait_b_frames
     call wait_vblank
-    ld a, %11111111
+    ld a, %00000000
+    ld [rBGP], a
+    jp lcd_off
+
+fade_in::
+    call lcd_on
+
+    ld b, 60
+    call wait_b_frames
+    call wait_vblank
+    ld a, %01000000
     ld [rBGP], a
 
+    ld b, 60
+    call wait_b_frames
+    call wait_vblank
+    ld a, %10010000
+    ld [rBGP], a
+
+    ld b, 60
+    call wait_b_frames
+    call wait_vblank
+    ld a, %11100100
+    ld [rBGP], a
     ret
 
 wait_b_frames:
