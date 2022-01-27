@@ -25,4 +25,7 @@ load_level1_off_tilemap:
 level1::
     call load_tileset_on
     call load_level1_on_tilemap
+
+    call draw_player
+
     jp fade_in

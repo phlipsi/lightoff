@@ -17,6 +17,7 @@ start::
     call init_timer
     call init_sound
     call init_lcd
+    call init_player
     call intro
     call level1
 
@@ -33,14 +34,22 @@ init_lcd:
     call wait_vblank
     ; Initialize LCD control
     ld hl, rLCDC
-    ld [hl], LCDCF_OFF | LCDCF_WIN9800 | LCDCF_WINOFF | LCDCF_BG8000 | LCDCF_BG9800 | LCDCF_OBJ8 | LCDCF_OBJOFF | LCDCF_BGON
+    ld [hl], LCDCF_OFF | LCDCF_WIN9800 | LCDCF_WINOFF | LCDCF_BG8000 | LCDCF_BG9800 | LCDCF_OBJ8 | LCDCF_OBJON | LCDCF_BGON
     ; Initialize background palette
     ld hl, rBGP
+    ld [hl], %11100100
+    ; Initialize object palette
+    ld hl, rOBP0
     ld [hl], %11100100
     ; clear background
     ld hl, _SCRN0
     ld d, 0
     ld bc, $400
+    call fill_memory
+    ; clear oam
+    ld hl, _OAMRAM
+    ld d, 0
+    ld bc, $a0
     jp fill_memory
 
 intro:
