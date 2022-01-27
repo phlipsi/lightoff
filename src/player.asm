@@ -15,9 +15,9 @@ init_player::
     ld a, 0
     ld [PLAYER_X], a
     ld [PLAYER_Y], a
-    ld a, %10000
+    ld a, -32
     ld [PLAYER_VX], a
-    ld a, %100000
+    ld a, 64
     ld [PLAYER_VY], a
     ld a, 8
     ld [PLAYER_X + 1], a
@@ -83,6 +83,10 @@ move_player::
     ld b, 0
     ld a, [PLAYER_VX]
     ld c, a
+    bit 7, c
+    jr z, .do_add_x
+    ld b, $ff
+.do_add_x:
     add hl, bc
     ld a, h
     ld [PLAYER_X + 1], a
@@ -96,6 +100,10 @@ move_player::
     ld b, 0
     ld a, [PLAYER_VY]
     ld c, a
+    bit 7, c
+    jr z, .do_add_y
+    ld b, $ff
+.do_add_y:
     add hl, bc
     ld a, h
     ld [PLAYER_Y + 1], a
