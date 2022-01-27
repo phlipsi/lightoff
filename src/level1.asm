@@ -32,6 +32,19 @@ level1::
 
     ld bc, $0810
     call init_player
+    ld bc, $0000
+    call init_camera
+    call update_camera
     call draw_player
 
-    jp fade_in
+    call fade_in
+
+.loop:
+    call wait_next_frame
+    call move_player
+    call wait_vblank
+    ld hl, CAMERA_X
+    inc [hl]
+    call update_camera
+    call draw_player
+    jr .loop

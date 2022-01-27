@@ -23,7 +23,7 @@ start::
 .loop:
     jr .loop
 
-wait_vblank:
+wait_vblank::
     ld a, [rLY]
     cp 144
     jr c, wait_vblank
@@ -118,7 +118,7 @@ wait_b_frames:
     call wait_next_frame
     jr wait_b_frames
 
-wait_next_frame:
+wait_next_frame::
     ld a, [rLY]
     or a
     jr nz, wait_next_frame
