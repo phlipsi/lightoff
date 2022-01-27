@@ -26,6 +26,10 @@ level1::
     ld de, level1_on
     ld bc, level1_on_end - level1_on
     call load_to_screen
+    ld hl, MAX_CAMERA_X
+    ld [hl], SCRN_VX - SCRN_X
+    ld hl, MAX_CAMERA_Y
+    ld [hl], 0
 
     call load_tileset_on
     call display_screen
@@ -42,9 +46,8 @@ level1::
 .loop:
     call wait_next_frame
     call move_player
+    call move_camera_to_player
     call wait_vblank
-    ld hl, CAMERA_X
-    inc [hl]
     call update_camera
     call draw_player
     jr .loop

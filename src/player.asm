@@ -103,3 +103,10 @@ move_player::
     ld [PLAYER_Y], a
 
     ret
+
+move_camera_to_player::
+    ld a, [PLAYER_X + 1]
+    ld b, a
+    ld a, [PLAYER_Y + 1]
+    ld c, a
+    jp move_camera_to
