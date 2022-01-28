@@ -394,7 +394,7 @@ move_player::
     add hl, de
     ld a, [hl]
     or a
-    jr z, .exit
+    jr z, .check_top
     ld a, b
     ld [PLAYER_X + 1], a
     ld a, 0
@@ -402,6 +402,21 @@ move_player::
     ld a, 0
     ld [PLAYER_VX + 1], a
     ld [PLAYER_VX], a
+
+.check_top:
+    ld de, $ffdf
+    add hl, de
+    ld a, [hl]
+    or a
+    jr z, .exit
+    ld a, c
+    add $8
+    ld [PLAYER_Y + 1], a
+    ld a, 0
+    ld [PLAYER_Y], a
+    ld a, 0
+    ld [PLAYER_VY + 1], a
+    ld [PLAYER_VY], a
 
 .exit:
     ret
