@@ -18,6 +18,7 @@ start::
     call init_sound
     call init_keys
     call init_lcd
+    call load_sprites
     ;call intro
     call level1
 
@@ -34,7 +35,7 @@ init_lcd:
     call wait_vblank
     ; Initialize LCD control
     ld hl, rLCDC
-    ld [hl], LCDCF_OFF | LCDCF_WIN9800 | LCDCF_WINOFF | LCDCF_BG8000 | LCDCF_BG9800 | LCDCF_OBJ8 | LCDCF_OBJON | LCDCF_BGON
+    ld [hl], LCDCF_OFF | LCDCF_WIN9800 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ8 | LCDCF_OBJON | LCDCF_BGON
     ; Initialize background palette
     ld hl, rBGP
     ld [hl], %11100100

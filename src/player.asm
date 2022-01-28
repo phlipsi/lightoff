@@ -72,7 +72,7 @@ draw_player::
     ld [hli], a
     ld a, b
     ld [hli], a
-    ld a, $e0
+    ld a, $0
     ld [hli], a
     ld a, 0
     ld [hli], a
@@ -82,7 +82,7 @@ draw_player::
     ld a, b
     add a, 8
     ld [hli], a
-    ld a, $e1
+    ld a, $1
     ld [hli], a
     ld a, 0
     ld [hli], a
@@ -92,7 +92,7 @@ draw_player::
     ld [hli], a
     ld a, b
     ld [hli], a
-    ld a, $f0
+    ld a, $10
     ld [hli], a
     ld a, 0
     ld [hli], a
@@ -103,7 +103,7 @@ draw_player::
     ld a, b
     add a, 8
     ld [hli], a
-    ld a, $f1
+    ld a, $11
     ld [hli], a
     ld a, 0
     ld [hli], a

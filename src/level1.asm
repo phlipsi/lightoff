@@ -29,7 +29,7 @@ level1::
     ld hl, MAX_CAMERA_X
     ld [hl], SCRN_VX - SCRN_X
     ld hl, MAX_CAMERA_Y
-    ld [hl], 0
+    ld [hl], SCRN_VY - SCRN_Y
 
     call load_tileset_on
     call display_screen

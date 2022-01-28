@@ -24,6 +24,7 @@ build build/main.o: asm src/main.asm
 build build/player.o: asm src/player.asm
 build build/screen.o: asm src/screen.asm
 build build/sound.o: asm src/sound.asm
+build build/sprites.o: asm src/sprites.asm | build/sprites.bin
 build build/tilesetoff.o: asm src/tilesetoff.asm | build/lightoff.bin
 build build/tileseton.o: asm src/tileseton.asm | build/lighton.bin
 build build/utils.o: asm src/utils.asm
@@ -37,6 +38,7 @@ build build/lightoff.gb: link $
     build/player.o $
     build/screen.o $
     build/sound.o $
+    build/sprites.o $
     build/tilesetoff.o $
     build/tileseton.o $
     build/utils.o
@@ -44,3 +46,4 @@ build build/lightoff.gb: link $
 
 build build/lightoff.bin: gfx assets/lightoff.png
 build build/lighton.bin: gfx assets/lighton.png
+build build/sprites.bin: gfx assets/sprites.png
