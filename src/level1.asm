@@ -48,19 +48,16 @@ level1::
     ld a, [JOYPAD_LEFT]
     cp $0f
     jr c, .check_right
-    ld a, low(-32)
-    ld [PLAYER_VX], a
-    ld a, high(-32)
-    ld [PLAYER_VX + 1], a
+    ld bc, -$150
+    call player_walk
     jr .move_player
+
 .check_right:
     ld a, [JOYPAD_RIGHT]
     cp $0f
     jr c, .move_player
-    ld a, low(32)
-    ld [PLAYER_VX], a
-    ld a, high(32)
-    ld [PLAYER_VX + 1], a
+    ld bc, $150
+    call player_walk
 
 .move_player:
     call move_player

@@ -8,10 +8,12 @@ PLAYER_VX:: DS 2
 PLAYER_VY:: DS 2
 PLAYER_AY: DS 2
 
-def PLAYER_GRAVITY equ $0020
+def PLAYER_GRAVITY equ $0040
+def PLAYER_FRICTION equ $0020
 def MAX_PLAYER_VY equ $0700
+def MAX_PLAYER_VX equ $0170
 
-def INIT_PLAYER_X equ $7000
+def INIT_PLAYER_X equ $6000
 def INIT_PLAYER_Y equ $0f00
 
 def INIT_PLAYER_VX equ 0 ;+32
@@ -46,6 +48,11 @@ init_player::
     ld [hl], low(PLAYER_GRAVITY)
     ld hl, PLAYER_AY + 1
     ld [hl], high(PLAYER_GRAVITY)
+
+    ; ld hl, PLAYER_AX
+    ; ld [hl], 0
+    ; ld hl, PLAYER_AX + 1
+    ; ld [hl], 0
 
     ret
 
@@ -99,7 +106,119 @@ draw_player::
 
     ret
 
-move_player::
+apply_friction:
+    ld a, [PLAYER_VX + 1]
+    ld h, a
+    ld a, [PLAYER_VX]
+    ld l, a
+    bit 7, h
+    jr nz, .negative
+    ; positive vx
+    ld a, l
+    sub low(PLAYER_FRICTION)
+    ld l, a
+    ld a, h
+    sbc high(PLAYER_FRICTION)
+    ld h, a
+    bit 7, h
+    jr z, .store
+    ; vx was positive, now negativ --> vx = 0!
+    ld hl, 0
+    jr .store
+
+.negative:
+    ; vx = -vx (two's complement)
+    ld a, h
+    cpl
+    ld h, a
+    ld a, l
+    cpl
+    ld l, a
+    inc hl
+
+    ld a, l
+    sub low(PLAYER_FRICTION)
+    ld l, a
+    ld a, h
+    sbc high(PLAYER_FRICTION)
+    ld h, a
+    bit 7, a
+    jr z, .store_negative
+    ld hl, 0
+    jr .store
+
+.store_negative:
+    ; vx = -vx
+    ld a, h
+    cpl
+    ld h, a
+    ld a, l
+    cpl
+    ld l, a
+    inc hl
+
+.store:
+    ld a, h
+    ld [PLAYER_VX + 1], a
+    ld a, l
+    ld [PLAYER_VX], a
+    ret
+
+; bc - speed increase
+player_walk::
+    ld a, [PLAYER_VX + 1]
+    ld h, a
+    ld a, [PLAYER_VX]
+    ld l, a
+    add hl, bc
+
+    ; apply max speed constraint
+    ld a, h
+    bit 7, a
+    jr nz, .negative
+    ld a, l
+    sub low(MAX_PLAYER_VX)
+    ld a, h
+    sbc high(MAX_PLAYER_VX)
+    jr c, .store
+    ld hl, MAX_PLAYER_VX
+    jr .store
+
+.negative:
+    ld a, h
+    cpl
+    ld h, a
+    ld a, l
+    cpl
+    ld l, a
+    inc hl
+
+    ld a, l
+    sub low(MAX_PLAYER_VX)
+    ld a, h
+    sbc high(MAX_PLAYER_VX)
+    jr c, .store_negative
+    ld hl, MAX_PLAYER_VX
+    jr .store_negative
+
+.store_negative:
+    ld a, h
+    cpl
+    ld h, a
+    ld a, l
+    cpl
+    ld l, a
+    inc hl
+
+.store:
+    ld a, h
+    ld [PLAYER_VX + 1], a
+    ld a, l
+    ld [PLAYER_VX], a
+
+    ret
+
+apply_vx_to_x:
     ld a, [PLAYER_X + 1]
     ld h, a
     ld a, [PLAYER_X]
@@ -114,6 +233,10 @@ move_player::
     ld a, l
     ld [PLAYER_X], a
 
+    ret
+
+apply_ay_to_vy:
+    ; apply acceleration to speed
     ld a, [PLAYER_VY + 1]
     ld h, a
     ld a, [PLAYER_VY]
@@ -123,25 +246,55 @@ move_player::
     ld a, [PLAYER_AY]
     ld c, a
     add hl, bc
+
+    ; apply max speed constraint
     ld a, h
-    cp high(MAX_PLAYER_VY)
-    jr c, .store_vy ; c --> h < high(MAX_PLAYER_VY)
-    ; h >= high(MAX_PLAYER_VY)
-    jr nz, .reset_vy ; nz --> h > high(MAX_PLAYER_VY)
-    ; h == high(MAX_PLAYER_VY)
+    bit 7, a
+    jr nz, .negative
     ld a, l
-    cp low(MAX_PLAYER_VY) ; c --> l < low(MAX_PLAYER_VY)
-    jr c, .store_vy
-    ; l >= low(MAX_PLAYER_VY)
-.reset_vy:
-    ld h, high(MAX_PLAYER_VY)
-    ld l, low(MAX_PLAYER_VY)
-.store_vy:
+    sub low(MAX_PLAYER_VY)
+    ld a, h
+    sbc high(MAX_PLAYER_VY)
+    jr c, .store
+    ld hl, MAX_PLAYER_VY
+    jr .store
+
+.negative:
+    cpl
+    ld h, a
+    ld a, l
+    cpl
+    ld l, a
+    inc hl
+
+    ld a, l
+    sub low(MAX_PLAYER_VY)
+    ld l, a
+    ld a, h
+    sbc high(MAX_PLAYER_VY)
+    ld h, a
+
+    jr c, .store_negative
+    ld hl, MAX_PLAYER_VY
+    jr .store_negative
+
+.store_negative:
+    cpl
+    ld h, a
+    ld a, l
+    cpl
+    ld l, a
+    inc hl
+
+.store:
     ld a, h
     ld [PLAYER_VY + 1], a
     ld a, l
     ld [PLAYER_VY], a
 
+    ret
+
+apply_vy_to_y:
     ld a, [PLAYER_Y + 1]
     ld h, a
     ld a, [PLAYER_Y]
@@ -155,6 +308,15 @@ move_player::
     ld [PLAYER_Y + 1], a
     ld a, l
     ld [PLAYER_Y], a
+
+    ret
+
+move_player::
+    call apply_friction
+    call apply_vx_to_x
+
+    call apply_ay_to_vy
+    call apply_vy_to_y
 
     ld a, [PLAYER_X + 1]
     ld b, a
@@ -186,9 +348,9 @@ move_player::
     ld [PLAYER_X + 1], a
     ld a, 0
     ld [PLAYER_X], a
-    ;ld a, 0
-    ;ld [PLAYER_VX + 1], a
-    ;ld [PLAYER_VX], a
+    ld a, 0
+    ld [PLAYER_VX + 1], a
+    ld [PLAYER_VX], a
     jr .exit
 
 .check_right:
@@ -201,9 +363,9 @@ move_player::
     ld [PLAYER_X + 1], a
     ld a, 0
     ld [PLAYER_X], a
-    ;ld a, 0
-    ;ld [PLAYER_VX + 1], a
-    ;ld [PLAYER_VX], a
+    ld a, 0
+    ld [PLAYER_VX + 1], a
+    ld [PLAYER_VX], a
 
 .exit:
     ret
