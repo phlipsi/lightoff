@@ -7,10 +7,12 @@ PLAYER_Y: DS 2
 PLAYER_VX:: DS 2
 PLAYER_VY:: DS 2
 PLAYER_AY: DS 2
+PLAYER_STANDING: DS 1
 
 def PLAYER_GRAVITY equ $0040
 def PLAYER_FRICTION equ $0020
-def MAX_PLAYER_VY equ $0700
+def PLAYER_JUMP_STRENGTH equ -$0600
+def MAX_PLAYER_VY equ $0800
 def MAX_PLAYER_VX equ $0170
 
 def INIT_PLAYER_X equ $6000
@@ -49,6 +51,8 @@ init_player::
     ld hl, PLAYER_AY + 1
     ld [hl], high(PLAYER_GRAVITY)
 
+    ld hl, PLAYER_STANDING
+    ld [hl], 0
     ; ld hl, PLAYER_AX
     ; ld [hl], 0
     ; ld hl, PLAYER_AX + 1
@@ -218,6 +222,27 @@ player_walk::
 
     ret
 
+player_jump::
+    ld a, [PLAYER_STANDING]
+    or a
+    ret z
+
+    ld a, [PLAYER_VY + 1]
+    ld h, a
+    ld a, [PLAYER_VY]
+    ld l, a
+    ld bc, PLAYER_JUMP_STRENGTH
+    add hl, bc
+
+    ld a, h
+    ld [PLAYER_VY + 1], a
+    ld a, l
+    ld [PLAYER_VY], a
+
+    ld a, 0
+    ld [PLAYER_STANDING], a
+    ret
+
 apply_vx_to_x:
     ld a, [PLAYER_X + 1]
     ld h, a
@@ -260,6 +285,7 @@ apply_ay_to_vy:
     jr .store
 
 .negative:
+    ld a, h
     cpl
     ld h, a
     ld a, l
@@ -269,16 +295,15 @@ apply_ay_to_vy:
 
     ld a, l
     sub low(MAX_PLAYER_VY)
-    ld l, a
     ld a, h
     sbc high(MAX_PLAYER_VY)
-    ld h, a
 
     jr c, .store_negative
     ld hl, MAX_PLAYER_VY
     jr .store_negative
 
 .store_negative:
+    ld a, h
     cpl
     ld h, a
     ld a, l
@@ -304,6 +329,15 @@ apply_vy_to_y:
     ld a, [PLAYER_VY]
     ld c, a
     add hl, bc
+
+    ld a, h
+    sub $10
+    jr nc, .store
+    ld hl, $1000
+    ld a, 0
+    ld [PLAYER_VY + 1], a
+    ld [PLAYER_VY], a
+.store:
     ld a, h
     ld [PLAYER_Y + 1], a
     ld a, l
@@ -336,6 +370,8 @@ move_player::
     ld a, 0
     ld [PLAYER_VY + 1], a
     ld [PLAYER_VY], a
+    ld a, 1
+    ld [PLAYER_STANDING], a
 
 .check_left:
     ld de, $ffdf

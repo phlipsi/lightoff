@@ -3,7 +3,7 @@ include "hardware.inc"
 section "LEVEL1", rom0
 
 level1_on:
-incbin "level1-on.tilemap", 0, 32 * 18
+incbin "level1-on.tilemap", 0, 32 * 32
 level1_on_end:
 
 level1_off:
@@ -46,18 +46,30 @@ level1::
     call wait_next_frame
     call read_keys
     ld a, [JOYPAD_LEFT]
-    cp $0f
-    jr c, .check_right
+    bit 7, a
+    jr z, .check_right
+    ;cp $0f
+    ;jr c, .check_right
     ld bc, -$150
     call player_walk
-    jr .move_player
+    jr .check_jump
 
 .check_right:
     ld a, [JOYPAD_RIGHT]
-    cp $0f
-    jr c, .move_player
+    bit 7, a
+    jr z, .check_jump
+    ;cp $0f
+    ;jr c, .check_jump
     ld bc, $150
     call player_walk
+
+.check_jump:
+    ld a, [JOYPAD_A]
+    bit 7, a
+    jr z, .move_player
+    ;cp $0f
+    ;jr c, .move_player
+    call player_jump
 
 .move_player:
     call move_player
