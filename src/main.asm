@@ -7,7 +7,7 @@ INCLUDE "hardware.inc"
 DEF TIMER_MOD EQU $d8
 DEF TICK_MOD EQU $19
 
-SECTION "STATE", WRAM0[$C000]
+SECTION "STATE", WRAM0
 
 tick: DS 1
 
@@ -17,7 +17,7 @@ start::
     call init_timer
     call init_sound
     call init_lcd
-    call intro
+    ;call intro
     call level1
 
 .loop:

@@ -11,7 +11,7 @@ PLAYER_AY: DS 2
 def PLAYER_GRAVITY equ $0020
 def MAX_PLAYER_VY equ $0700
 
-def INIT_PLAYER_X equ $0800
+def INIT_PLAYER_X equ $5800
 def INIT_PLAYER_Y equ $0f00
 
 def INIT_PLAYER_VX equ -32
@@ -156,6 +156,28 @@ move_player::
     ld a, l
     ld [PLAYER_Y], a
 
+    ld a, [PLAYER_X + 1]
+    ld b, a
+    ld a, [PLAYER_Y + 1]
+    ld c, a
+    ;call relative_to_level
+    call get_block_at_position
+    or a
+    jr z, .exit
+    ; something is underneath player
+    ;ld a, b
+    ;ld [PLAYER_X + 1], a
+    ;ld a, 0
+    ;ld [PLAYER_X], a
+    ld a, c
+    ld [PLAYER_Y + 1], a
+    ld a, 0
+    ld [PLAYER_Y], a
+    ld a, 0
+    ld [PLAYER_VY + 1], a
+    ld [PLAYER_VY], a
+
+.exit:
     ret
 
 move_camera_to_player::
