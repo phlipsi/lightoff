@@ -16,6 +16,7 @@ SECTION "LIGHTOFF", ROM0
 start::
     call init_timer
     call init_sound
+    call init_keys
     call init_lcd
     ;call intro
     call level1

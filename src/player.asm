@@ -4,8 +4,8 @@ section "PLAYER_PRIVATE", wram0
 
 PLAYER_X: DS 2
 PLAYER_Y: DS 2
-PLAYER_VX: DS 2
-PLAYER_VY: DS 2
+PLAYER_VX:: DS 2
+PLAYER_VY:: DS 2
 PLAYER_AY: DS 2
 
 def PLAYER_GRAVITY equ $0020
@@ -14,7 +14,7 @@ def MAX_PLAYER_VY equ $0700
 def INIT_PLAYER_X equ $7000
 def INIT_PLAYER_Y equ $0f00
 
-def INIT_PLAYER_VX equ +32
+def INIT_PLAYER_VX equ 0 ;+32
 def INIT_PLAYER_VY equ 0
 
 section "PLAYER", rom0

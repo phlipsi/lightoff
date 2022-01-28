@@ -44,6 +44,25 @@ level1::
 
 .loop:
     call wait_next_frame
+    call read_keys
+    ld a, [JOYPAD_LEFT]
+    cp $0f
+    jr c, .check_right
+    ld a, low(-32)
+    ld [PLAYER_VX], a
+    ld a, high(-32)
+    ld [PLAYER_VX + 1], a
+    jr .move_player
+.check_right:
+    ld a, [JOYPAD_RIGHT]
+    cp $0f
+    jr c, .move_player
+    ld a, low(32)
+    ld [PLAYER_VX], a
+    ld a, high(32)
+    ld [PLAYER_VX + 1], a
+
+.move_player:
     call move_player
     call move_camera_to_player
     call wait_vblank
