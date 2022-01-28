@@ -2,7 +2,7 @@ include "hardware.inc"
 
 section "SCREEN_DATA", wram0[$C000]
 
-SCREEN: DS 32 * 32
+SCREEN:: DS 32 * 32
 CAMERA_X:: DS 1
 CAMERA_Y:: DS 1
 MAX_CAMERA_X:: DS 1
@@ -57,38 +57,20 @@ relative_to_level::
     ld c, a
     ret
 
-get_block_at_position::
-    ; y: (de / 8) * 32 = (de >> 3) << 5
-    ;ld d, 0
-    ;ld e, c
-    ; e >> 3
-    ;srl e
-    ;srl e
-    ;srl e
-    ; de << 5
-    ;sla e
-    ;rl d
-    ;sla e
-    ;rl d
-    ;sla e
-    ;rl d
-    ;sla e
-    ;rl d
-    ;sla e
-    ;rl d
+; b - x
+; c - y
+; hl - offset
+get_block_offset_at_position::
     ; y: (de / 8) * 32 = (de >> 3) << 5 = (de & 0b1111'1111'1111'1000) << 2
     ld a, c
     and %11111000
     ld c, a ; output block y
-    ld d, 0
-    ld e, a
-    sla e
-    rl d
-    sla e
-    rl d
-
-    ld hl, SCREEN
-    add hl, de
+    ld h, 0
+    ld l, a
+    sla l
+    rl h
+    sla l
+    rl h
 
     ld d, 0
     ld e, b
@@ -102,8 +84,6 @@ get_block_at_position::
     ld b, a ; output block x
 
     add hl, de
-
-    ld a, [hl]
     ret
 
 ; b - x

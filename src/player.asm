@@ -11,10 +11,10 @@ PLAYER_AY: DS 2
 def PLAYER_GRAVITY equ $0020
 def MAX_PLAYER_VY equ $0700
 
-def INIT_PLAYER_X equ $5800
+def INIT_PLAYER_X equ $7000
 def INIT_PLAYER_Y equ $0f00
 
-def INIT_PLAYER_VX equ -32
+def INIT_PLAYER_VX equ +32
 def INIT_PLAYER_VY equ 0
 
 section "PLAYER", rom0
@@ -160,15 +160,13 @@ move_player::
     ld b, a
     ld a, [PLAYER_Y + 1]
     ld c, a
-    ;call relative_to_level
-    call get_block_at_position
+    call get_block_offset_at_position
+    ld de, SCREEN
+    add hl, de
+    ld a, [hl]
     or a
-    jr z, .exit
+    jr z, .check_left
     ; something is underneath player
-    ;ld a, b
-    ;ld [PLAYER_X + 1], a
-    ;ld a, 0
-    ;ld [PLAYER_X], a
     ld a, c
     ld [PLAYER_Y + 1], a
     ld a, 0
@@ -176,6 +174,36 @@ move_player::
     ld a, 0
     ld [PLAYER_VY + 1], a
     ld [PLAYER_VY], a
+
+.check_left:
+    ld de, $ffdf
+    add hl, de
+    ld a, [hl]
+    or a
+    jr z, .check_right
+    ld a, b
+    add $8
+    ld [PLAYER_X + 1], a
+    ld a, 0
+    ld [PLAYER_X], a
+    ;ld a, 0
+    ;ld [PLAYER_VX + 1], a
+    ;ld [PLAYER_VX], a
+    jr .exit
+
+.check_right:
+    ld de, $0002
+    add hl, de
+    ld a, [hl]
+    or a
+    jr z, .exit
+    ld a, b
+    ld [PLAYER_X + 1], a
+    ld a, 0
+    ld [PLAYER_X], a
+    ;ld a, 0
+    ;ld [PLAYER_VX + 1], a
+    ;ld [PLAYER_VX], a
 
 .exit:
     ret
