@@ -14,7 +14,7 @@ incbin "level1-on.tilemap", 0, 32 * 32
 level1_on_end:
 
 level1_off:
-    incbin "level1-off.tilemap", 0, $1c0
+    incbin "level1-off.tilemap", 0, 32 * 32
 level1_off_end:
     
 load_level1_on_tilemap:
@@ -41,10 +41,12 @@ level1::
     ld bc, $0810
     call init_player
     call move_camera_to_player
-    ld bc, $70f0
+    ld bc, $b840
     call init_key
     ld bc, $20a0
     call init_door
+    ld bc, $7848
+    call init_eye
 
 .outer:
     ld a, [LIGHT]
@@ -71,6 +73,7 @@ level1::
     call update_camera
     call draw_player
     call draw_key
+    call draw_eye
 
     call fade_in
 
@@ -121,6 +124,7 @@ level1::
     ld a, LIGHT_ON
     sub [hl]
     ld [hl], a
+    call fade_out
     jp .outer
 
 .exit:

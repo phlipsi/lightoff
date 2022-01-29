@@ -434,26 +434,13 @@ move_player::
     ld [PLAYER_VY + 1], a
     ld [PLAYER_VY], a
 
-    ld a, [PLAYER_Y + 1]
-    add a, $8
-    ld hl, EYE_Y
-    cp [hl]
-    jr c, .check_key
-    ld a, [PLAYER_Y + 1]
-    sub a, $8
-    cp [hl]
-    jr nc, .check_key
-
-    ld a, [PLAYER_X + 1]
-    add a, $8
-    ld hl, EYE_X
-    cp [hl]
-    jr c, .check_key
-    ld a, [PLAYER_X + 1]
-    sub a, $8
-    cp [hl]
-    jr nc, .check_key
-
+    ld a, [hl]
+    cp $99
+    jr z, .got_eye
+    cp $98
+    jr z, .got_eye
+    jr .check_key
+.got_eye:
     ld a, PLAYER_FOUND_EYE
     ret
 
