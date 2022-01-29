@@ -50,5 +50,44 @@ play_bounce::
 
     ret
 
+play_jump::
+    ld a, $13
+    ld [rAUD1SWEEP], a
+    ld a, $9f
+    ld [rAUD1LEN], a
+    ld a, $f0
+    ld [rAUD1ENV], a
+    ld a, $80
+    ld [rAUD1LOW], a
+    ld a, $c0
+    ld [rAUD1HIGH], a
+    ret
+
+play_step::
+    ld a, $13
+    ld [rAUD1SWEEP], a
+    ld a, $b9
+    ld [rAUD1LEN], a
+    ld a, $f0
+    ld [rAUD1ENV], a
+    ld a, $00
+    ld [rAUD1LOW], a
+    ld a, $c0
+    ld [rAUD1HIGH], a
+    ret
+
+play_got_key::
+    ld a, $15
+    ld [rAUD1SWEEP], a
+    ld a, $80
+    ld [rAUD1LEN], a
+    ld a, $f0
+    ld [rAUD1ENV], a
+    ld a, $f0
+    ld [rAUD1LOW], a
+    ld a, $c4
+    ld [rAUD1HIGH], a
+    ret
+
 play_next_eighth::
-    jr play_bounce
+    ret

@@ -251,6 +251,8 @@ player_jump::
 
     ld a, 0
     ld [PLAYER_STANDING], a
+
+    call play_jump
     ret
 
 apply_vx_to_x:
@@ -385,6 +387,7 @@ move_player::
     jr nz, .check_left
     ld a, 1
     ld [PLAYER_STANDING], a
+    call play_step
 
 .check_left:
     ld de, $ffdf
@@ -510,6 +513,7 @@ move_player::
     cp [hl]
     jr nc, .exit
 
+    call play_got_key
     ld a, 1
     ld [PLAYER_GOT_KEY], a
 
