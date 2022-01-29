@@ -1,11 +1,7 @@
 INCLUDE "hardware.inc"
 
-; 4kHz = 4000Hz
-; 240bpm = 4Hz (60bpm = 1Hz)
-; 4000Hz / 4Hz = 1000 = 2 * 2 * 2 * 5 * 5 * 5 = 40 * 25
-;              = (256 - 216) * 25 = (256 - $d8) * $19
-DEF TIMER_MOD EQU $d8
-DEF TICK_MOD EQU $19
+DEF TIMER_MOD EQU $e7
+DEF TICK_MOD EQU $18
 
 SECTION "STATE", WRAM0
 

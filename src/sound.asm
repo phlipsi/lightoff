@@ -16,6 +16,15 @@ DEF ENV_SWEEP EQU 3
 DEF FREQUENCY EQU 2048 - (131072 / 110)
 DEF EXPIRES EQU 1
 
+section "SONG_DATA", wram0
+
+ENABLED: DS 1
+START: DS 2
+LENGTH: DS 1
+
+CURRENT: DS 2
+REMAINING: DS 1
+
 SECTION "SOUND_PUBLIC", ROM0
 
 init_sound::
@@ -30,6 +39,8 @@ init_sound::
     ld a, AUDENA_ON
     ld [rAUDENA], a
 
+    ld a, 0
+    ld [ENABLED], a
     ret
 
 play_bounce::
@@ -90,4 +101,108 @@ play_got_key::
     ret
 
 play_next_eighth::
+    ld a, [ENABLED]
+    or a
+    ret z
+
+    ld a, [CURRENT]
+    ld l, a
+    ld a, [CURRENT + 1]
+    ld h, a
+    ld a, [REMAINING]
+    ld c, a
+
+    ld de, 3
+
+    ld a, [hli]
+    or a
+    jr z, .skip_aud2
+    ld [rAUD2LEN], a
+    ld a, [hli]
+    ld [rAUD2ENV], a
+    ld a, [hli]
+    ld [rAUD2LOW], a
+    ld a, [hli]
+    ld [rAUD2HIGH], a
+    jr .aud3
+
+.skip_aud2:
+    add hl, de
+
+.aud3:
+    ld a, [hli]
+    or a
+    jr z, .skip_aud3
+    ld [rAUD3LEN], a
+    ld a, [hli]
+    ld [rAUD3LEVEL], a
+    ld a, [hli]
+    ld [rAUD3LOW], a
+    ld a, [hli]
+    ld [rAUD3HIGH], a
+    ld a, $80
+    ld [rAUD3ENA], a
+    jr .aud4
+
+.skip_aud3:
+    add hl, de
+
+.aud4:
+    ld a, [hli]
+    or a
+    jr z, .skip_aud4
+    ld [rAUD4LEN], a
+    ld a, [hli]
+    ld [rAUD4ENV], a
+    ld a, [hli]
+    ld [rAUD4POLY], a
+    ld a, [hli]
+    ld [rAUD4GO], a
+    jr .remaining
+
+.skip_aud4:
+    add hl, de
+
+.remaining:
+    ld a, [REMAINING]
+    dec a
+    ld [REMAINING], a
+    jr nz, .more
+
+    ld a, [START]
+    ld [CURRENT], a
+    ld a, [START + 1]
+    ld [CURRENT + 1], a
+    ld a, [LENGTH]
+    ld [REMAINING], a
     ret
+
+.more:
+    ld a, l
+    ld [CURRENT], a
+    ld a, h
+    ld [CURRENT + 1], a
+
+    ret
+
+; bc - pointer
+; d  - length
+init_song::
+    ld a, c
+    ld [START], a
+    ld [CURRENT], a
+    ld a, b
+    ld [START + 1], a
+    ld [CURRENT + 1], a
+    ld a, d
+    ld [LENGTH], a
+    ld [REMAINING], a
+
+    ld a, 1
+    ld [ENABLED], a
+    ret
+
+load_custom_wave::
+    ld hl, _AUD3WAVERAM
+    ld bc, $10
+    jp copy_memory
