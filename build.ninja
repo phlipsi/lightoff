@@ -19,6 +19,7 @@ rule gfx
 build build/intro.o: asm src/intro.asm
 build build/joypad.o: asm src/joypad.asm
 build build/header.o: asm src/header.asm
+build build/key.o: asm src/key.asm
 build build/level1.o: asm src/level1.asm | assets/level1-on.tilemap assets/level1-off.tilemap
 build build/main.o: asm src/main.asm
 build build/player.o: asm src/player.asm
@@ -33,6 +34,7 @@ build build/lightoff.gb: link $
     build/intro.o $
     build/joypad.o $
     build/header.o $
+    build/key.o $
     build/level1.o $
     build/main.o $
     build/player.o $

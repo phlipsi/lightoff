@@ -37,8 +37,11 @@ level1::
     ld bc, $0810
     call init_player
     call move_camera_to_player
+    ld bc, $c040
+    call init_key
     call update_camera
     call draw_player
+    call draw_key
 
     call fade_in
 
@@ -77,4 +80,5 @@ level1::
     call wait_vblank
     call update_camera
     call draw_player
+    call draw_key
     jr .loop
