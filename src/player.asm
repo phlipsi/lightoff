@@ -8,6 +8,7 @@ PLAYER_VX:: DS 2
 PLAYER_VY:: DS 2
 PLAYER_AY: DS 2
 PLAYER_STANDING: DS 1
+PLAYER_GOT_KEY: DS 1
 
 def PLAYER_GRAVITY equ $0040
 def PLAYER_FRICTION equ $0020
@@ -52,6 +53,9 @@ init_player::
     ld [hl], high(PLAYER_GRAVITY)
 
     ld hl, PLAYER_STANDING
+    ld [hl], 0
+
+    ld hl, PLAYER_GOT_KEY
     ld [hl], 0
     ; ld hl, PLAYER_AX
     ; ld [hl], 0
@@ -387,7 +391,7 @@ move_player::
     ld a, 0
     ld [PLAYER_VX + 1], a
     ld [PLAYER_VX], a
-    jr .exit
+    jr .check_key
 
 .check_right:
     ld de, $0002
@@ -408,7 +412,7 @@ move_player::
     add hl, de
     ld a, [hl]
     bit 7, a
-    jr z, .exit
+    jr z, .check_key
     ld a, c
     add $8
     ld [PLAYER_Y + 1], a
@@ -417,6 +421,18 @@ move_player::
     ld a, 0
     ld [PLAYER_VY + 1], a
     ld [PLAYER_VY], a
+
+.check_key:
+    ld a, [PLAYER_GOT_KEY]
+    or a
+    jr z, .exit
+    ld hl, PLAYER_X + 1
+    ld a, [hl]
+    ld [KEY_X], a
+    ld hl, PLAYER_Y + 1
+    ld a, [hl]
+    sub a, $e
+    ld [KEY_Y], a
 
 .exit:
     ret
