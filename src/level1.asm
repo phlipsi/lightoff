@@ -39,6 +39,8 @@ level1::
     call move_camera_to_player
     ld bc, $70f0
     call init_key
+    ld bc, $20a0
+    call init_door
     call update_camera
     call draw_player
     call draw_key
@@ -76,9 +78,15 @@ level1::
 
 .move_player:
     call move_player
+    or 0
+    jr nz, .exit
     call move_camera_to_player
     call wait_vblank
     call update_camera
     call draw_player
     call draw_key
     jr .loop
+
+.exit:
+    call fade_out
+    ret

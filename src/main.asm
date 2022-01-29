@@ -72,7 +72,7 @@ lcd_on:
     set 7, [hl]
     ret
 
-fade_out:
+fade_out::
     ld b, 60
     call wait_b_frames
     call wait_vblank

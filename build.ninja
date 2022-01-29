@@ -16,6 +16,7 @@ rule link
 rule gfx
     command = $rgbgfx -o $out $in
 
+build build/door.o: asm src/door.asm
 build build/intro.o: asm src/intro.asm
 build build/joypad.o: asm src/joypad.asm
 build build/header.o: asm src/header.asm
@@ -31,6 +32,7 @@ build build/tileseton.o: asm src/tileseton.asm | build/lighton.bin
 build build/utils.o: asm src/utils.asm
 
 build build/lightoff.gb: link $
+    build/door.o $
     build/intro.o $
     build/joypad.o $
     build/header.o $

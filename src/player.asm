@@ -433,7 +433,29 @@ move_player::
     ld a, [hl]
     sub a, $a
     ld [KEY_Y], a
-    jr .exit
+
+    ld a, [PLAYER_Y + 1]
+    add a, $8
+    ld hl, DOOR_Y
+    cp [hl]
+    jr c, .exit
+    ld a, [PLAYER_Y + 1]
+    sub a, $8
+    cp [hl]
+    jr nc, .exit
+
+    ld a, [PLAYER_X + 1]
+    add a, $8
+    ld hl, DOOR_X
+    cp [hl]
+    jr c, .exit
+    ld a, [PLAYER_X + 1]
+    sub a, $8
+    cp [hl]
+    jr nc, .exit
+
+    ld a, 1
+    ret
 
 .collect_key:
     ld a, [PLAYER_Y + 1]
@@ -460,6 +482,7 @@ move_player::
     ld [PLAYER_GOT_KEY], a
 
 .exit:
+    ld a, 0
     ret
 
 move_camera_to_player::
