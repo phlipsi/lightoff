@@ -11,7 +11,7 @@ PLAYER_STANDING: DS 1
 
 def PLAYER_GRAVITY equ $0040
 def PLAYER_FRICTION equ $0020
-def PLAYER_JUMP_STRENGTH equ -$0600
+def PLAYER_JUMP_STRENGTH equ -$0500
 def MAX_PLAYER_VY equ $0800
 def MAX_PLAYER_VX equ $0170
 
@@ -360,7 +360,7 @@ move_player::
     ld de, SCREEN
     add hl, de
     ld a, [hl]
-    or a
+    and %00001000
     jr z, .check_left
     ; something is underneath player
     ld a, c
@@ -377,7 +377,7 @@ move_player::
     ld de, $ffdf
     add hl, de
     ld a, [hl]
-    or a
+    bit 7, a
     jr z, .check_right
     ld a, b
     add $8
@@ -393,7 +393,7 @@ move_player::
     ld de, $0002
     add hl, de
     ld a, [hl]
-    or a
+    bit 7, a
     jr z, .check_top
     ld a, b
     ld [PLAYER_X + 1], a
@@ -407,7 +407,7 @@ move_player::
     ld de, $ffdf
     add hl, de
     ld a, [hl]
-    or a
+    bit 7, a
     jr z, .exit
     ld a, c
     add $8
