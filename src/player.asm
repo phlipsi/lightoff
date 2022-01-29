@@ -22,6 +22,12 @@ def INIT_PLAYER_Y equ $0f00
 def INIT_PLAYER_VX equ 0 ;+32
 def INIT_PLAYER_VY equ 0
 
+def PLAYER_FOUND_NOTHING equ 0
+def PLAYER_FOUND_DOOR    equ 1
+def PLAYER_FOUND_EYE     equ 2
+
+export PLAYER_FOUND_NOTHING, PLAYER_FOUND_DOOR, PLAYER_FOUND_EYE
+
 section "PLAYER", rom0
 
 ; b - x coordinate
@@ -374,6 +380,9 @@ move_player::
     ld a, 0
     ld [PLAYER_VY + 1], a
     ld [PLAYER_VY], a
+    ld a, [PLAYER_STANDING]
+    or a
+    jr nz, .check_left
     ld a, 1
     ld [PLAYER_STANDING], a
 
@@ -422,6 +431,29 @@ move_player::
     ld [PLAYER_VY + 1], a
     ld [PLAYER_VY], a
 
+    ld a, [PLAYER_Y + 1]
+    add a, $8
+    ld hl, EYE_Y
+    cp [hl]
+    jr c, .check_key
+    ld a, [PLAYER_Y + 1]
+    sub a, $8
+    cp [hl]
+    jr nc, .check_key
+
+    ld a, [PLAYER_X + 1]
+    add a, $8
+    ld hl, EYE_X
+    cp [hl]
+    jr c, .check_key
+    ld a, [PLAYER_X + 1]
+    sub a, $8
+    cp [hl]
+    jr nc, .check_key
+
+    ld a, PLAYER_FOUND_EYE
+    ret
+
 .check_key:
     ld a, [PLAYER_GOT_KEY]
     or a
@@ -454,7 +486,7 @@ move_player::
     cp [hl]
     jr nc, .exit
 
-    ld a, 1
+    ld a, PLAYER_FOUND_DOOR
     ret
 
 .collect_key:
@@ -482,7 +514,7 @@ move_player::
     ld [PLAYER_GOT_KEY], a
 
 .exit:
-    ld a, 0
+    ld a, PLAYER_FOUND_NOTHING
     ret
 
 move_camera_to_player::

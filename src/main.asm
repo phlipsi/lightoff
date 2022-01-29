@@ -19,7 +19,7 @@ start::
     call init_keys
     call init_lcd
     call load_sprites
-    ;call intro
+    call intro
     call level1
 
 .loop:
