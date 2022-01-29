@@ -37,7 +37,7 @@ level1::
     ld bc, $0810
     call init_player
     call move_camera_to_player
-    ld bc, $c040
+    ld bc, $70f0
     call init_key
     call update_camera
     call draw_player

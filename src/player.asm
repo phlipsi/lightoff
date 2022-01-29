@@ -391,7 +391,7 @@ move_player::
     ld a, 0
     ld [PLAYER_VX + 1], a
     ld [PLAYER_VX], a
-    jr .check_key
+    jr .check_top
 
 .check_right:
     ld de, $0002
@@ -425,14 +425,39 @@ move_player::
 .check_key:
     ld a, [PLAYER_GOT_KEY]
     or a
-    jr z, .exit
+    jr z, .collect_key
     ld hl, PLAYER_X + 1
     ld a, [hl]
     ld [KEY_X], a
     ld hl, PLAYER_Y + 1
     ld a, [hl]
-    sub a, $e
+    sub a, $a
     ld [KEY_Y], a
+    jr .exit
+
+.collect_key:
+    ld a, [PLAYER_Y + 1]
+    add a, $8
+    ld hl, KEY_Y
+    cp [hl]
+    jr c, .exit
+    ld a, [PLAYER_Y + 1]
+    sub a, $8
+    cp [hl]
+    jr nc, .exit
+
+    ld a, [PLAYER_X + 1]
+    add a, $8
+    ld hl, KEY_X
+    cp [hl]
+    jr c, .exit
+    ld a, [PLAYER_X + 1]
+    sub a, $8
+    cp [hl]
+    jr nc, .exit
+
+    ld a, 1
+    ld [PLAYER_GOT_KEY], a
 
 .exit:
     ret
