@@ -20,12 +20,17 @@ section "SONG_DATA", wram0
 
 TICKS: DS 1
 ENABLED: DS 1
-START: DS 2
-LENGTH: DS 2
+SONG: DS 2
+PATTERN_COUNT: DS 1
+LINES_COUNT: DS 1
 
 CURRENT_TICK: DS 1
-CURRENT: DS 2
-REMAINING: DS 2
+
+CURRENT_PATTERN: DS 2
+REMAINING_PATTERNS: DS 1
+
+CURRENT_LINE: DS 1
+REMAINING_LINES: DS 1
 
 SECTION "SOUND_PUBLIC", ROM0
 
@@ -106,26 +111,24 @@ play_got_key::
     ld [rAUD1HIGH], a
     ret
 
-play_next_eighth:
-    ld a, [ENABLED]
-    or a
+play_pattern_ch2:
+    ld a, d
+    or e
     ret z
 
-    push bc
-    push de
-
-    ld a, [CURRENT]
-    ld l, a
-    ld a, [CURRENT + 1]
-    ld h, a
-    ld a, [REMAINING]
-    ld c, a
-
-    ld de, 3
+    push hl
+    ld h, d
+    ld l, e
+    ld d, 0
+    ld a, [CURRENT_LINE]
+    sla a
+    sla a
+    ld e, a
+    add hl, de
 
     ld a, [hli]
     or a
-    jr z, .skip_aud2
+    jr z, .skip
     ld [rAUD2LEN], a
     ld a, [hli]
     ld [rAUD2ENV], a
@@ -133,15 +136,29 @@ play_next_eighth:
     ld [rAUD2LOW], a
     ld a, [hli]
     ld [rAUD2HIGH], a
-    jr .aud3
 
-.skip_aud2:
+.skip:
+    pop hl
+    ret
+
+play_pattern_ch3:
+    ld a, d
+    or e
+    ret z
+
+    push hl
+    ld h, d
+    ld l, e
+    ld d, 0
+    ld a, [CURRENT_LINE]
+    sla a
+    sla a
+    ld e, a
     add hl, de
 
-.aud3:
     ld a, [hli]
     or a
-    jr z, .skip_aud3
+    jr z, .skip
     ld [rAUD3LEN], a
     ld a, [hli]
     ld [rAUD3LEVEL], a
@@ -151,15 +168,29 @@ play_next_eighth:
     ld [rAUD3HIGH], a
     ld a, $80
     ld [rAUD3ENA], a
-    jr .aud4
 
-.skip_aud3:
+.skip:
+    pop hl
+    ret
+
+play_pattern_ch4:
+    ld a, d
+    or e
+    ret z
+
+    push hl
+    ld h, d
+    ld l, e
+    ld d, 0
+    ld a, [CURRENT_LINE]
+    sla a
+    sla a
+    ld e, a
     add hl, de
 
-.aud4:
     ld a, [hli]
     or a
-    jr z, .skip_aud4
+    jr z, .skip
     ld [rAUD4LEN], a
     ld a, [hli]
     ld [rAUD4ENV], a
@@ -167,41 +198,79 @@ play_next_eighth:
     ld [rAUD4POLY], a
     ld a, [hli]
     ld [rAUD4GO], a
-    jr .remaining
 
-.skip_aud4:
-    add hl, de
+.skip:
+    pop hl
+    ret
 
-.remaining:
-    ld a, [REMAINING]
+play_next_line:
+    ld a, [ENABLED]
+    or a
+    ret z
+
+    push bc
+    push de
+
+    ld a, [CURRENT_PATTERN]
+    ld l, a
+    ld a, [CURRENT_PATTERN + 1]
+    ld h, a
+
+    ld a, [hli]
     ld e, a
-    ld a, [REMAINING + 1]
+    ld a, [hli]
     ld d, a
-    dec de
-    ld a, e
-    or d
-    ld [REMAINING], a
-    ld a, d
-    ld [REMAINING + 1], a
-    jr nz, .more
+    call play_pattern_ch2
 
-    ld a, [START]
-    ld [CURRENT], a
-    ld a, [START + 1]
-    ld [CURRENT + 1], a
-    ld a, [LENGTH]
-    ld [REMAINING], a
-    ld a, [LENGTH + 1]
-    ld [REMAINING + 1], a
-    jr .exit
+    ld a, [hli]
+    ld e, a
+    ld a, [hli]
+    ld d, a
+    call play_pattern_ch3
 
-.more:
+    ld a, [hli]
+    ld e, a
+    ld a, [hli]
+    ld d, a
+    call play_pattern_ch4
+
+
+    ld a, [CURRENT_LINE]
+    inc a
+    ld [CURRENT_LINE], a
+
+    ld a, [REMAINING_LINES]
+    dec a
+    ld [REMAINING_LINES], a
+    or a
+    jr nz, .exit
+    ; lines in pattern exhausted
+    ld a, [LINES_COUNT]
+    ld [REMAINING_LINES], a
+    ld a, 0
+    ld [CURRENT_LINE], a
+
+    ; goto to next pattern
     ld a, l
-    ld [CURRENT], a
+    ld [CURRENT_PATTERN], a
     ld a, h
-    ld [CURRENT + 1], a
+    ld [CURRENT_PATTERN + 1], a
 
-.exit
+    ld a, [REMAINING_PATTERNS]
+    dec a
+    ld [REMAINING_PATTERNS], a
+    or 0
+    jr nz, .exit
+    ; patterns exhausted
+    ld a, [PATTERN_COUNT]
+    ld [REMAINING_PATTERNS], a
+
+    ld a, [SONG]
+    ld [CURRENT_PATTERN], a
+    ld a, [SONG + 1]
+    ld [CURRENT_PATTERN + 1], a
+
+.exit:
     pop de
     pop bc
     ret
@@ -214,15 +283,15 @@ next_tick::
     jr nz, .exit
     ld a, [TICKS]
     ld [CURRENT_TICK], a
-    call play_next_eighth
+    call play_next_line
 .exit:
     pop hl
     pop af
     reti
 
-
-; bc - pointer
-; de - length
+; bc - song pointer
+; d  - number of patterns
+; e  - length of patterns
 ; h - timer divider
 ; l - ticks
 init_song::
@@ -230,17 +299,22 @@ init_song::
     ld [ENABLED], a
 
     ld a, c
-    ld [START], a
-    ld [CURRENT], a
+    ld [SONG], a
+    ld [CURRENT_PATTERN], a
     ld a, b
-    ld [START + 1], a
-    ld [CURRENT + 1], a
-    ld a, e
-    ld [LENGTH], a
-    ld [REMAINING], a
+    ld [SONG + 1], a
+    ld [CURRENT_PATTERN + 1], a
+
     ld a, d
-    ld [LENGTH + 1], a
-    ld [REMAINING + 1], a
+    ld [PATTERN_COUNT], a
+    ld [REMAINING_PATTERNS], a
+
+    ld a, e
+    ld [LINES_COUNT], a
+    ld [REMAINING_LINES], a
+
+    ld a, 0
+    ld [CURRENT_LINE], a
 
     ld a, 1
     ld [ENABLED], a
