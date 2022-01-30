@@ -9,6 +9,7 @@ PLAYER_VY:: DS 2
 PLAYER_AY: DS 2
 PLAYER_STANDING: DS 1
 PLAYER_GOT_KEY: DS 1
+PLAYER_ANIMATION: DS 1
 
 def PLAYER_GRAVITY equ $0040
 def PLAYER_FRICTION equ $0020
@@ -63,6 +64,9 @@ init_player::
 
     ld hl, PLAYER_GOT_KEY
     ld [hl], 0
+
+    ld a, 0
+    ld [PLAYER_ANIMATION], a
     ; ld hl, PLAYER_AX
     ; ld [hl], 0
     ; ld hl, PLAYER_AX + 1
@@ -77,12 +81,18 @@ draw_player::
     ld c, [hl]
     call relative_to_camera
 
+    ld a, [PLAYER_ANIMATION]
+    srl a
+    srl a
+    srl a
+    and %00000010
+    ld d, a
     ld hl, _OAMRAM
     ld a, c
     ld [hli], a
     ld a, b
     ld [hli], a
-    ld a, $0
+    ld a, d
     ld [hli], a
     ld a, 0
     ld [hli], a
@@ -92,7 +102,8 @@ draw_player::
     ld a, b
     add a, 8
     ld [hli], a
-    ld a, $1
+    ld a, d
+    inc a
     ld [hli], a
     ld a, 0
     ld [hli], a
@@ -102,7 +113,8 @@ draw_player::
     ld [hli], a
     ld a, b
     ld [hli], a
-    ld a, $10
+    ld a, d
+    add a, $10
     ld [hli], a
     ld a, 0
     ld [hli], a
@@ -113,7 +125,8 @@ draw_player::
     ld a, b
     add a, 8
     ld [hli], a
-    ld a, $11
+    ld a, d
+    add a, $11
     ld [hli], a
     ld a, 0
     ld [hli], a
@@ -358,6 +371,10 @@ apply_vy_to_y:
     ret
 
 move_player::
+    ld a, [PLAYER_ANIMATION]
+    inc a
+    ld [PLAYER_ANIMATION], a
+
     call apply_friction
     call apply_vx_to_x
 
