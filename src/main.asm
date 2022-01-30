@@ -13,6 +13,7 @@ start::
     call load_sprites
     call intro
     call level1
+    call level2
     call outro
     jr start
 

@@ -23,6 +23,7 @@ build build/joypad.o: asm src/joypad.asm
 build build/header.o: asm src/header.asm
 build build/key.o: asm src/key.asm
 build build/level1.o: asm src/level1.asm | assets/level1-on.tilemap assets/level1-off.tilemap
+build build/level2.o: asm src/level2.asm | assets/level2-on.tilemap assets/level2-off.tilemap
 build build/main.o: asm src/main.asm
 build build/outro.o: asm src/outro.asm | assets/outro.tilemap
 build build/player.o: asm src/player.asm
@@ -44,6 +45,7 @@ build build/lightoff.gb: link $
     build/header.o $
     build/key.o $
     build/level1.o $
+    build/level2.o $
     build/main.o $
     build/outro.o $
     build/player.o $
