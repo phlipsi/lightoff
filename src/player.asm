@@ -81,54 +81,84 @@ draw_player::
     ld c, [hl]
     call relative_to_camera
 
+    ld a, [PLAYER_VX]
+    or 0
+    jr z, .still
+    ld d, 4
+    bit 7, a
+    jr nz, .right
+    ld e, OAMF_XFLIP
+    jr .animation
+.right
+    ld e, 0
+    jr .animation
+.still:
+    ld e, 0
+    ld d, 0
+.animation
     ld a, [PLAYER_ANIMATION]
     srl a
     srl a
     srl a
     and %00000010
+    add a, d
     ld d, a
     ld hl, _OAMRAM
     ld a, c
     ld [hli], a
     ld a, b
+    bit 5, e
+    jr z, .normal1
+    add a, 8
+.normal1
     ld [hli], a
     ld a, d
     ld [hli], a
-    ld a, 0
+    ld a, e
     ld [hli], a
 
     ld a, c
     ld [hli], a
     ld a, b
+    bit 5, e
+    jr nz, .normal2
     add a, 8
+.normal2
     ld [hli], a
     ld a, d
     inc a
     ld [hli], a
-    ld a, 0
+    ld a, e
     ld [hli], a
 
     ld a, c
     add a, 8
     ld [hli], a
     ld a, b
+    bit 5, e
+    jr z, .normal3
+    add a, 8
+.normal3
     ld [hli], a
     ld a, d
     add a, $10
     ld [hli], a
-    ld a, 0
+    ld a, e
     ld [hli], a
 
     ld a, c
     add a, 8
     ld [hli], a
     ld a, b
+    bit 5, e
+    jr nz, .normal4
     add a, 8
+.normal4
     ld [hli], a
     ld a, d
     add a, $11
     ld [hli], a
-    ld a, 0
+    ld a, e
     ld [hli], a
 
     ret
