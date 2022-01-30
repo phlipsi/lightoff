@@ -11,7 +11,7 @@ start::
     call init_keys
     call init_lcd
     call load_sprites
-    ;call intro
+    call intro
     call level1
 
 .loop:
@@ -48,6 +48,7 @@ init_lcd:
 intro:
     call load_tileset_off
     call load_intro_tilemap
+    call load_song1
     call lcd_on
     call wait_until_keypress
     call fade_out
