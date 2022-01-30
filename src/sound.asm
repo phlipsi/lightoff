@@ -105,6 +105,9 @@ play_next_eighth::
     or a
     ret z
 
+    push bc
+    push de
+
     ld a, [CURRENT]
     ld l, a
     ld a, [CURRENT + 1]
@@ -175,7 +178,7 @@ play_next_eighth::
     ld [CURRENT + 1], a
     ld a, [LENGTH]
     ld [REMAINING], a
-    ret
+    jr .exit
 
 .more:
     ld a, l
@@ -183,6 +186,9 @@ play_next_eighth::
     ld a, h
     ld [CURRENT + 1], a
 
+.exit
+    pop de
+    pop bc
     ret
 
 ; bc - pointer
