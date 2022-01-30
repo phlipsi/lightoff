@@ -29,6 +29,7 @@ build build/player.o: asm src/player.asm
 build build/screen.o: asm src/screen.asm
 build build/song1.o: asm src/song1.asm | src/notes.inc
 build build/song2.o: asm src/song2.asm | src/notes.inc
+build build/song3.o: asm src/song3.asm | src/notes.inc
 build build/sound.o: asm src/sound.asm
 build build/sprites.o: asm src/sprites.asm | build/sprites.bin
 build build/tilesetoff.o: asm src/tilesetoff.asm | build/lightoff.bin
@@ -49,6 +50,7 @@ build build/lightoff.gb: link $
     build/screen.o $
     build/song1.o $
     build/song2.o $
+    build/song3.o $
     build/sound.o $
     build/sprites.o $
     build/tilesetoff.o $

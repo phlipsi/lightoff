@@ -47,7 +47,7 @@ init_lcd:
 intro:
     call load_tileset_off
     call load_intro_tilemap
-    call load_song1
+    call load_song3
     call fade_in
     call wait_until_keypress
     call fade_out
@@ -59,7 +59,7 @@ outro:
     call update_camera
     call load_tileset_on
     call load_outro_tilemap
-    call load_song1
+    call load_song3
     call fade_in
     call wait_until_keypress
 
