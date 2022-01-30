@@ -30,7 +30,7 @@ load_level1_off_tilemap:
     jp copy_memory
 
 level1::
-    call load_song1
+    call load_song2
 
     ld hl, MAX_CAMERA_X
     ld [hl], SCRN_VX - SCRN_X
