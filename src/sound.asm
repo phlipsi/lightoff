@@ -111,6 +111,34 @@ play_got_key::
     ld [rAUD1HIGH], a
     ret
 
+play_eye::
+    ld a, $15
+    ld [rAUD1SWEEP], a
+    ld a, $80
+    ld [rAUD1LEN], a
+    ld a, $f2
+    ld [rAUD1ENV], a
+    ld a, $00
+    ld [rAUD1LOW], a
+    ld a, $81
+    ld [rAUD1HIGH], a
+
+    ret
+
+play_door::
+    ld a, $15
+    ld [rAUD1SWEEP], a
+    ld a, $00
+    ld [rAUD1LEN], a
+    ld a, $f7
+    ld [rAUD1ENV], a
+    ld a, $f3
+    ld [rAUD1LOW], a
+    ld a, $c2
+    ld [rAUD1HIGH], a
+
+    ret
+
 play_pattern_ch2:
     ld a, d
     or e

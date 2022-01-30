@@ -35,14 +35,14 @@ section "PLAYER", rom0
 ; c - y coordinate
 init_player::
     ld hl, PLAYER_X
-    ld [hl], low(INIT_PLAYER_X)
+    ld [hl], 0
     ld hl, PLAYER_X + 1
-    ld [hl], high(INIT_PLAYER_X)
+    ld [hl], b
 
     ld hl, PLAYER_Y
-    ld [hl], low(INIT_PLAYER_Y)
+    ld [hl], 0
     ld hl, PLAYER_Y + 1
-    ld [hl], high(INIT_PLAYER_Y)
+    ld [hl], c
 
     ld hl, PLAYER_VX
     ld [hl], low(INIT_PLAYER_VX)
@@ -488,6 +488,7 @@ move_player::
     jr z, .got_eye
     jr .check_key
 .got_eye:
+    call play_eye
     ld a, PLAYER_FOUND_EYE
     ret
 
@@ -523,6 +524,7 @@ move_player::
     cp [hl]
     jr nc, .exit
 
+    call play_door
     ld a, PLAYER_FOUND_DOOR
     ret
 

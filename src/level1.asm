@@ -38,7 +38,7 @@ level1::
     ld a, LIGHT_ON
     ld [LIGHT], a
 
-    ld bc, $0810
+    ld bc, $10e8
     call init_player
     call move_camera_to_player
     ld bc, $b840
