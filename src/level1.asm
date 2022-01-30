@@ -133,4 +133,14 @@ level1::
 
 .exit:
     call fade_out
+
+    ld a, 0
+    ld [PLAYER_X], a
+    ld [PLAYER_X + 1], a
+    ld [PLAYER_Y], a
+    ld [PLAYER_Y + 1], a
+    ld [KEY_X], a
+    ld [KEY_Y], a
+    call draw_key
+    call draw_player
     ret

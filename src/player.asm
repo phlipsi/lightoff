@@ -2,8 +2,8 @@ include "hardware.inc"
 
 section "PLAYER_PRIVATE", wram0
 
-PLAYER_X: DS 2
-PLAYER_Y: DS 2
+PLAYER_X:: DS 2
+PLAYER_Y:: DS 2
 PLAYER_VX:: DS 2
 PLAYER_VY:: DS 2
 PLAYER_AY: DS 2

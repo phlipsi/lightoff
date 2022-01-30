@@ -13,9 +13,8 @@ start::
     call load_sprites
     call intro
     call level1
-
-.loop:
-    jr .loop
+    call outro
+    jr start
 
 wait_vblank::
     ld a, [rLY]
@@ -49,9 +48,21 @@ intro:
     call load_tileset_off
     call load_intro_tilemap
     call load_song1
-    call lcd_on
+    call fade_in
     call wait_until_keypress
     call fade_out
+    ret
+
+outro:
+    ld bc, 0
+    call move_camera_to
+    call update_camera
+    call load_tileset_on
+    call load_outro_tilemap
+    call load_song1
+    call fade_in
+    call wait_until_keypress
+
     ret
 
 lcd_off:

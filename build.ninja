@@ -24,6 +24,7 @@ build build/header.o: asm src/header.asm
 build build/key.o: asm src/key.asm
 build build/level1.o: asm src/level1.asm | assets/level1-on.tilemap assets/level1-off.tilemap
 build build/main.o: asm src/main.asm
+build build/outro.o: asm src/outro.asm | assets/outro.tilemap
 build build/player.o: asm src/player.asm
 build build/screen.o: asm src/screen.asm
 build build/song1.o: asm src/song1.asm | src/notes.inc
@@ -43,6 +44,7 @@ build build/lightoff.gb: link $
     build/key.o $
     build/level1.o $
     build/main.o $
+    build/outro.o $
     build/player.o $
     build/screen.o $
     build/song1.o $
