@@ -345,4 +345,5 @@ load_song1::
     call load_custom_wave
     ld bc, song1
     ld de, (song1_end - song1) / 12
+    ld hl, $e718
     jp init_song

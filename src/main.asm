@@ -3,10 +3,6 @@ INCLUDE "hardware.inc"
 DEF TIMER_MOD EQU $e7
 DEF TICK_MOD EQU $18
 
-SECTION "STATE", WRAM0
-
-tick: DS 1
-
 SECTION "LIGHTOFF", ROM0
 
 start::
@@ -123,31 +119,31 @@ wait_next_frame::
     ret
 
 init_timer:
-    ld hl, tick
-    ld [hl], TICK_MOD
+    ;ld hl, tick
+    ;ld [hl], TICK_MOD
 
     ld hl, rIE
     ld [hl], IEF_TIMER
 
-    ld hl, rTAC
-    ld [hl], TACF_START | TACF_4KHZ
+    ;ld hl, rTAC
+    ;ld [hl], TACF_START | TACF_4KHZ
 
-    ld hl, rTMA
-    ld [hl], TIMER_MOD
+    ;ld hl, rTMA
+    ;ld [hl], TIMER_MOD
 
     ei
 
     ret
 
-tick_timer::
-    push af
-    push hl
-    ld hl, tick
-    dec [hl]
-    jr nz, .exit
-    ld [hl], TICK_MOD
-    call play_next_eighth
-.exit:
-    pop hl
-    pop af
-    reti
+; tick_timer::
+;     push af
+;     push hl
+;     ld hl, tick
+;     dec [hl]
+;     jr nz, .exit
+;     ld [hl], TICK_MOD
+;     call play_next_eighth
+; .exit:
+;     pop hl
+;     pop af
+;     reti

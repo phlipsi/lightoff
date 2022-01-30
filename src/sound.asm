@@ -18,16 +18,21 @@ DEF EXPIRES EQU 1
 
 section "SONG_DATA", wram0
 
+TICKS: DS 1
 ENABLED: DS 1
 START: DS 2
 LENGTH: DS 2
 
+CURRENT_TICK: DS 1
 CURRENT: DS 2
 REMAINING: DS 2
 
 SECTION "SOUND_PUBLIC", ROM0
 
 init_sound::
+    ld a, 0
+    ld [rTAC], a
+
     ld a, AUDVOL_VIN_LEFT | VOLUME_LEFT << 4 | \
           AUDVOL_VIN_RIGHT | VOLUME_RIGHT
     ld [rAUDVOL], a
@@ -41,6 +46,7 @@ init_sound::
 
     ld a, 0
     ld [ENABLED], a
+
     ret
 
 play_bounce::
@@ -100,7 +106,7 @@ play_got_key::
     ld [rAUD1HIGH], a
     ret
 
-play_next_eighth::
+play_next_eighth:
     ld a, [ENABLED]
     or a
     ret z
@@ -200,9 +206,29 @@ play_next_eighth::
     pop bc
     ret
 
+next_tick::
+    push af
+    push hl
+    ld hl, CURRENT_TICK
+    dec [hl]
+    jr nz, .exit
+    ld a, [TICKS]
+    ld [CURRENT_TICK], a
+    call play_next_eighth
+.exit:
+    pop hl
+    pop af
+    reti
+
+
 ; bc - pointer
 ; de - length
+; h - timer divider
+; l - ticks
 init_song::
+    ld a, 0
+    ld [ENABLED], a
+
     ld a, c
     ld [START], a
     ld [CURRENT], a
@@ -218,6 +244,17 @@ init_song::
 
     ld a, 1
     ld [ENABLED], a
+
+    ld a, h
+    ld [rTMA], a
+
+    ld a, l
+    ld [TICKS], a
+    ld [CURRENT_TICK], a
+
+    ld a, TACF_START | TACF_4KHZ
+    ld [rTAC], a
+
     ret
 
 load_custom_wave::

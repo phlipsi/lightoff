@@ -8,7 +8,7 @@ stat_interrupt:
 
 SECTION "TIMER_INTERRUPT", ROM0[$0050]
 timer_interrupt:
-    jp tick_timer
+    jp next_tick
 
 SECTION "SERIAL_INTERRUPT", ROM0[$0058]
 serial_interrupt:
