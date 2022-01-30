@@ -92,15 +92,95 @@ song1:
     db CH2, A5,   CH3, C4,   NULL
     db NULL,      NULL,      NULL
     ; 5 -------------------------
-    db CH2, G4,   CH3, D4,   SH
-    db NULL,      NULL,      SH
+    db CH2, G4,   CH3, AIS3, NULL
+    db NULL,      NULL,      NULL
+    db CH2, A4,   NULL,      HH
+    db NULL,      NULL,      NULL
+
+    db NULL,      CH3, A4,   NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   NULL,      HH
+    db CH2, D4,   CH3, AIS3, NULL
+
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      HH
+    db CH2, A5,   NULL,      NULL
+
+    db NULL,      CH3, AIS4, NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   NULL,      HH
+    db NULL,      NULL,      NULL
+    ; 6 -------------------------
+    db NULL,      CH3, AIS3, NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   CH3, AIS3, HH
+    db NULL,      NULL,      NULL
+
+    db NULL,      CH3, D4,   NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   NULL,      HH
+    db NULL,      CH3, AIS3, NULL
+
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      HH
+    db CH2, A5,   NULL,      NULL
+
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   NULL,      HH
+    db NULL,      NULL,      NULL
+    ; 7 -------------------------
+    db CH2, G4,   CH3, AIS3, NULL
+    db NULL,      NULL,      NULL
+    db CH2, A4,   NULL,      NULL
+    db NULL,      NULL,      NULL
+
+    db NULL,      CH3, A4,   NULL
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db CH2, D4,   CH3, AIS3, NULL
+
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+
+    db NULL,      CH3, AIS4, NULL
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    ; 8 -------------------------
+    db NULL,      CH3, AIS3, NULL
+    db NULL,      NULL,      NULL
+    db NULL,      CH3, AIS3, NULL
+    db NULL,      NULL,      NULL
+
+    db NULL,      CH3, D4,   NULL
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db NULL,      CH3, AIS3, NULL
+
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db CH2, D6,   NULL,      SN
+
+    db NULL,      NULL,      SN
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      SN
+    db NULL,      NULL,      NULL
+    ; 9 -------------------------
+    db CH2, G4,   CH3, D4,   BD
+    db NULL,      NULL,      BD
     db CH2, A4,   NULL,      HH
     db NULL,      NULL,      NULL
 
     db NULL,      CH3, C4,   SN
     db CH2, G4,   NULL,      NULL
-    db CH2, A5,   NULL,      SH
-    db CH2, D4,   CH3, D4,   SH
+    db CH2, A5,   NULL,      BD
+    db CH2, D4,   CH3, D4,   BD
 
     db NULL,      NULL,      NULL
     db NULL,      NULL,      NULL
@@ -111,16 +191,16 @@ song1:
     db NULL,      NULL,      NULL
     db CH2, A5,   NULL,      HH
     db NULL,      NULL,      NULL
-    ; 6 -------------------------
-    db NULL,      CH3, D4,   SH
-    db NULL,      NULL,      SH
+    ; 10 ------------------------
+    db NULL,      CH3, D4,   BD
+    db NULL,      NULL,      BD
     db CH2, A5,   CH3, D4,   HH
     db NULL,      NULL,      NULL
 
     db CH2, D5,   CH3, F4,   SN
     db CH2, D4,   NULL,      NULL
-    db CH2, A5,   NULL,      SH
-    db NULL,      CH3, D4,   SH
+    db CH2, A5,   NULL,      BD
+    db NULL,      CH3, D4,   BD
 
     db CH2, D5,   NULL,      NULL
     db NULL,      NULL,      NULL
@@ -131,16 +211,16 @@ song1:
     db CH2, D5,   NULL,      NULL
     db CH2, A5,   NULL,      HH
     db CH2, D6,   NULL,      NULL
-    ; 7 -------------------------
-    db CH2, G4,   CH3, D4,   SH
-    db NULL,      NULL,      SH
+    ; 11 ------------------------
+    db CH2, G4,   CH3, D4,   BD
+    db NULL,      NULL,      BD
     db CH2, A4,   NULL,      HH
     db NULL,      NULL,      NULL
 
     db NULL,      CH3, C4,   SN
     db CH2, G4,   NULL,      NULL
-    db CH2, A5,   NULL,      SH
-    db CH2, D4,   CH3, D4,   SH
+    db CH2, A5,   NULL,      BD
+    db CH2, D4,   CH3, D4,   BD
 
     db NULL,      NULL,      NULL
     db NULL,      NULL,      NULL
@@ -151,16 +231,16 @@ song1:
     db NULL,      NULL,      NULL
     db CH2, A5,   NULL,      HH
     db NULL,      NULL,      NULL
-    ; 8 -------------------------
-    db NULL,      CH3, D4,   SH
-    db NULL,      NULL,      SH
+    ; 12 ------------------------
+    db NULL,      CH3, D4,   BD
+    db NULL,      NULL,      BD
     db CH2, A5,   CH3, D4,   HH
     db NULL,      NULL,      NULL
 
     db CH2, D5,   CH3, F4,   SN
     db CH2, D4,   NULL,      NULL
-    db CH2, A5,   NULL,      SH
-    db NULL,      CH3, D4,   SH
+    db CH2, A5,   NULL,      BD
+    db NULL,      CH3, D4,   BD
 
     db CH2, D5,   NULL,      NULL
     db NULL,      NULL,      NULL
@@ -171,16 +251,16 @@ song1:
     db CH2, D5,   NULL,      NULL
     db CH2, A5,   CH3, C4,   HH
     db CH2, D6,   NULL,      NULL
-    ; 9 -------------------------
-    db CH2, G4,   CH3, AIS3, SH
-    db NULL,      NULL,      SH
+    ; 13 ------------------------
+    db CH2, G4,   CH3, AIS3, BD
+    db NULL,      NULL,      BD
     db CH2, A4,   NULL,      HH
     db NULL,      NULL,      NULL
 
     db NULL,      CH3, A4,   SN
     db CH2, G4,   NULL,      NULL
-    db CH2, A5,   NULL,      SH
-    db CH2, D4,   CH3, AIS3, SH
+    db CH2, A5,   NULL,      BD
+    db CH2, D4,   CH3, AIS3, BD
 
     db NULL,      NULL,      NULL
     db NULL,      NULL,      NULL
@@ -191,16 +271,16 @@ song1:
     db NULL,      NULL,      NULL
     db CH2, A5,   NULL,      HH
     db NULL,      NULL,      NULL
-    ; 10 ------------------------
-    db NULL,      CH3, AIS3, SH
-    db NULL,      NULL,      SH
+    ; 14 ------------------------
+    db NULL,      CH3, AIS3, BD
+    db NULL,      NULL,      BD
     db CH2, A5,   CH3, AIS3, HH
     db NULL,      NULL,      NULL
 
     db CH2, D5,   CH3, D4,   SN
     db CH2, D4,   NULL,      NULL
-    db CH2, A5,   NULL,      SH
-    db NULL,      CH3, AIS3, SH
+    db CH2, A5,   NULL,      BD
+    db NULL,      CH3, AIS3, BD
 
     db CH2, D5,   NULL,      NULL
     db NULL,      NULL,      NULL
@@ -211,16 +291,16 @@ song1:
     db CH2, D5,   NULL,      NULL
     db CH2, A5,   NULL,      HH
     db CH2, D6,   NULL,      NULL
-    ; 11 ------------------------
-    db CH2, G4,   CH3, AIS3, SH
-    db NULL,      NULL,      SH
+    ; 15 ------------------------
+    db CH2, G4,   CH3, AIS3, BD
+    db NULL,      NULL,      BD
     db CH2, A4,   NULL,      HH
     db NULL,      NULL,      NULL
 
     db NULL,      CH3, A4,   SN
     db CH2, G4,   NULL,      NULL
-    db CH2, A5,   NULL,      SH
-    db CH2, D4,   CH3, AIS3, SH
+    db CH2, A5,   NULL,      BD
+    db CH2, D4,   CH3, AIS3, BD
 
     db NULL,      NULL,      NULL
     db NULL,      NULL,      NULL
@@ -231,16 +311,16 @@ song1:
     db NULL,      NULL,      NULL
     db CH2, A5,   NULL,      HH
     db NULL,      NULL,      NULL
-    ; 12 ------------------------
-    db NULL,      CH3, AIS3, SH
-    db NULL,      NULL,      SH
+    ; 16 ------------------------
+    db NULL,      CH3, AIS3, BD
+    db NULL,      NULL,      BD
     db CH2, A5,   CH3, AIS3, HH
     db NULL,      NULL,      NULL
 
     db CH2, D5,   CH3, D4,   SN
     db CH2, D4,   NULL,      NULL
-    db CH2, A5,   NULL,      SH
-    db NULL,      CH3, AIS3, SH
+    db CH2, A5,   NULL,      BD
+    db NULL,      CH3, AIS3, BD
 
     db CH2, D5,   NULL,      NULL
     db NULL,      NULL,      NULL
@@ -264,5 +344,5 @@ load_song1::
     ld de, channel3_wave
     call load_custom_wave
     ld bc, song1
-    ld d, (song1_end - song1) / 12
+    ld de, (song1_end - song1) / 12
     jp init_song

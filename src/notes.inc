@@ -36,5 +36,6 @@ def NULL equs "$00, $00, $00, $00"
 
 def SH equs  "$3a, $f1, $00, $c0"
 ;def BD equs  "$2c, $f1, $90, $c0"
+def BD equs  "$2c, $a1, $90, $c0"
 def HH equs "$3a, $f1, $00, $c0"
 def SN equs "$20, $f1, $50, $80"

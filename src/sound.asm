@@ -20,10 +20,10 @@ section "SONG_DATA", wram0
 
 ENABLED: DS 1
 START: DS 2
-LENGTH: DS 1
+LENGTH: DS 2
 
 CURRENT: DS 2
-REMAINING: DS 1
+REMAINING: DS 2
 
 SECTION "SOUND_PUBLIC", ROM0
 
@@ -168,8 +168,15 @@ play_next_eighth::
 
 .remaining:
     ld a, [REMAINING]
-    dec a
+    ld e, a
+    ld a, [REMAINING + 1]
+    ld d, a
+    dec de
+    ld a, e
+    or d
     ld [REMAINING], a
+    ld a, d
+    ld [REMAINING + 1], a
     jr nz, .more
 
     ld a, [START]
@@ -178,6 +185,8 @@ play_next_eighth::
     ld [CURRENT + 1], a
     ld a, [LENGTH]
     ld [REMAINING], a
+    ld a, [LENGTH + 1]
+    ld [REMAINING + 1], a
     jr .exit
 
 .more:
@@ -192,7 +201,7 @@ play_next_eighth::
     ret
 
 ; bc - pointer
-; d  - length
+; de - length
 init_song::
     ld a, c
     ld [START], a
@@ -200,9 +209,12 @@ init_song::
     ld a, b
     ld [START + 1], a
     ld [CURRENT + 1], a
-    ld a, d
+    ld a, e
     ld [LENGTH], a
     ld [REMAINING], a
+    ld a, d
+    ld [LENGTH + 1], a
+    ld [REMAINING + 1], a
 
     ld a, 1
     ld [ENABLED], a
