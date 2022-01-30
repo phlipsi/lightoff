@@ -4,7 +4,7 @@ rgblink = $rgbds/rgblink.exe
 rgbfix = $rgbds/rgbfix.exe
 rgbgfx = $rgbds/rgbgfx.exe
 flags = -i assets -i hardware -i build -i src
-fix_flags = -p0 -v
+fix_flags = -p0 -v -m MBC1
 
 rule asm
     command = $rgbasm $flags -o $out $in

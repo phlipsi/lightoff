@@ -1,6 +1,6 @@
 include "notes.inc"
 
-section "SONG1", rom0
+section "SONG1", romx, bank[1]
 
 def CH2  equs "$31, $f1"
 def CH3  equs "$e0, $20"
@@ -12,6 +12,86 @@ channel3_wave:
 song1:
     ;  SQUARE2    WAVE       PERC
     ; 1 -------------------------
+    db NULL,      CH3, D4,   NULL
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+
+    db NULL,      CH3, C4,   NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   NULL,      NULL
+    db NULL,      CH3, D4,   NULL
+
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   NULL,      NULL
+
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   NULL,      NULL
+    db NULL,      NULL,      NULL
+    ; 2 -------------------------
+    db NULL,      CH3, D4,   NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   CH3, D4,   NULL
+    db NULL,      NULL,      NULL
+
+    db NULL,      CH3, F4,   NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   NULL,      NULL
+    db NULL,      CH3, D4,   NULL
+
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   NULL,      NULL
+
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   NULL,      NULL
+    db NULL,      NULL,      NULL
+    ; 3 -------------------------
+    db NULL,      CH3, D4,   NULL
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+
+    db NULL,      CH3, C4,   NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   NULL,      NULL
+    db NULL,      CH3, D4,   NULL
+
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   NULL,      NULL
+
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   NULL,      NULL
+    db NULL,      NULL,      NULL
+    ; 4 -------------------------
+    db NULL,      CH3, D4,   NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   CH3, D4,   NULL
+    db NULL,      NULL,      NULL
+
+    db NULL,      CH3, F4,   NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   NULL,      NULL
+    db NULL,      CH3, D4,   NULL
+
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   NULL,      NULL
+
+    db NULL,      NULL,      NULL
+    db NULL,      NULL,      NULL
+    db CH2, A5,   CH3, C4,   NULL
+    db NULL,      NULL,      NULL
+    ; 5 -------------------------
     db CH2, G4,   CH3, D4,   SH
     db NULL,      NULL,      SH
     db CH2, A4,   NULL,      HH
@@ -31,7 +111,7 @@ song1:
     db NULL,      NULL,      NULL
     db CH2, A5,   NULL,      HH
     db NULL,      NULL,      NULL
-    ; 2 -------------------------
+    ; 6 -------------------------
     db NULL,      CH3, D4,   SH
     db NULL,      NULL,      SH
     db CH2, A5,   CH3, D4,   HH
@@ -51,7 +131,7 @@ song1:
     db CH2, D5,   NULL,      NULL
     db CH2, A5,   NULL,      HH
     db CH2, D6,   NULL,      NULL
-    ; 3 -------------------------
+    ; 7 -------------------------
     db CH2, G4,   CH3, D4,   SH
     db NULL,      NULL,      SH
     db CH2, A4,   NULL,      HH
@@ -71,7 +151,7 @@ song1:
     db NULL,      NULL,      NULL
     db CH2, A5,   NULL,      HH
     db NULL,      NULL,      NULL
-    ; 4 -------------------------
+    ; 8 -------------------------
     db NULL,      CH3, D4,   SH
     db NULL,      NULL,      SH
     db CH2, A5,   CH3, D4,   HH
@@ -91,7 +171,7 @@ song1:
     db CH2, D5,   NULL,      NULL
     db CH2, A5,   CH3, C4,   HH
     db CH2, D6,   NULL,      NULL
-    ; 5 -------------------------
+    ; 9 -------------------------
     db CH2, G4,   CH3, AIS3, SH
     db NULL,      NULL,      SH
     db CH2, A4,   NULL,      HH
@@ -111,7 +191,7 @@ song1:
     db NULL,      NULL,      NULL
     db CH2, A5,   NULL,      HH
     db NULL,      NULL,      NULL
-    ; 6 -------------------------
+    ; 10 ------------------------
     db NULL,      CH3, AIS3, SH
     db NULL,      NULL,      SH
     db CH2, A5,   CH3, AIS3, HH
@@ -131,7 +211,7 @@ song1:
     db CH2, D5,   NULL,      NULL
     db CH2, A5,   NULL,      HH
     db CH2, D6,   NULL,      NULL
-    ; 7 -------------------------
+    ; 11 ------------------------
     db CH2, G4,   CH3, AIS3, SH
     db NULL,      NULL,      SH
     db CH2, A4,   NULL,      HH
@@ -151,7 +231,7 @@ song1:
     db NULL,      NULL,      NULL
     db CH2, A5,   NULL,      HH
     db NULL,      NULL,      NULL
-    ; 8 -------------------------
+    ; 12 ------------------------
     db NULL,      CH3, AIS3, SH
     db NULL,      NULL,      SH
     db CH2, A5,   CH3, AIS3, HH
@@ -174,7 +254,13 @@ song1:
     ; ===========================
 song1_end:
 
+section "SONG1_LOADER", rom0
+
 load_song1::
+    ; select rom bank 1
+    ld a, $01
+    ld [$2000], a
+
     ld de, channel3_wave
     call load_custom_wave
     ld bc, song1
