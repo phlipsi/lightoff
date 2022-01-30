@@ -30,8 +30,6 @@ load_level1_off_tilemap:
     jp copy_memory
 
 level1::
-    call load_song1
-
     ld hl, MAX_CAMERA_X
     ld [hl], SCRN_VX - SCRN_X
     ld hl, MAX_CAMERA_Y
@@ -55,6 +53,8 @@ level1::
     cp LIGHT_OFF
     jr z, .load_light_off
 
+    call load_song1
+
     ld de, level1_on
     ld bc, level1_on_end - level1_on
     call load_to_screen
@@ -64,6 +64,8 @@ level1::
     jr .start
 
 .load_light_off:
+    call load_song2
+
     ld de, level1_off
     ld bc, level1_off_end - level1_off
     call load_to_screen

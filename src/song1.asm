@@ -10,8 +10,8 @@ channel3_wave:
     ;db $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $00, $00, $00, $00, $00, $00, $00, $00
 
 song1:
-    dw beep_intro, base_intro,  perc_intro
-    dw beep_intro, base_intro, perc_intro2
+    ;dw beep_intro, base_intro,  perc_intro
+    ;dw beep_intro, base_intro, perc_intro2
     dw beep_main,  base_main,   perc_main
     dw beep_main,  base_main,   perc_main
     dw beep_main,  base_main2,   perc_main
