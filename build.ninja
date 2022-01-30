@@ -3,7 +3,7 @@ rgbasm = $rgbds/rgbasm.exe
 rgblink = $rgbds/rgblink.exe
 rgbfix = $rgbds/rgbfix.exe
 rgbgfx = $rgbds/rgbgfx.exe
-flags = -i assets -i hardware -i build
+flags = -i assets -i hardware -i build -i src
 fix_flags = -p0 -v
 
 rule asm
@@ -26,6 +26,7 @@ build build/level1.o: asm src/level1.asm | assets/level1-on.tilemap assets/level
 build build/main.o: asm src/main.asm
 build build/player.o: asm src/player.asm
 build build/screen.o: asm src/screen.asm
+build build/song1.o: asm src/song1.asm | src/notes.inc
 build build/sound.o: asm src/sound.asm
 build build/sprites.o: asm src/sprites.asm | build/sprites.bin
 build build/tilesetoff.o: asm src/tilesetoff.asm | build/lightoff.bin
@@ -43,6 +44,7 @@ build build/lightoff.gb: link $
     build/main.o $
     build/player.o $
     build/screen.o $
+    build/song1.o $
     build/sound.o $
     build/sprites.o $
     build/tilesetoff.o $
