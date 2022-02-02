@@ -435,7 +435,7 @@ move_player::
     add hl, de
     ld a, [hl]
     and %00001000
-    jr z, .check_left
+    jr z, .falling
     ; something is underneath player
     ld a, c
     ld [PLAYER_Y + 1], a
@@ -450,6 +450,11 @@ move_player::
     ld a, 1
     ld [PLAYER_STANDING], a
     call play_step
+    jr .check_left
+
+.falling:
+    ld a, 0
+    ld [PLAYER_STANDING], a
 
 .check_left:
     ld de, $ffdf
