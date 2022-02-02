@@ -10,3 +10,4 @@
 *.sym
 /.vscode/
 /.ninja_log
+/*.geany
