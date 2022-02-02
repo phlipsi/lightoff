@@ -1,5 +1,6 @@
 def C2   equs "$2c, $c0"
 def D2   equs "$06, $c1"
+def DIS2 equs "$6b, $c1"
 def E2   equs "$c9, $c1"
 def F2   equs "$22, $c2"
 def FIS2 equs "$76, $c2"
