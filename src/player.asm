@@ -308,6 +308,21 @@ apply_vx_to_x:
     ld a, [PLAYER_VX]
     ld c, a
     add hl, bc
+
+    ld a, h
+    cp 8
+    jr nc, .check_overflow
+    ld h, 8
+    ld l, 0
+    jr .store
+
+.check_overflow:
+    cp 255-8
+    jr c, .store
+    ld h, 255-8
+    ld l, 0
+
+.store:
     ld a, h
     ld [PLAYER_X + 1], a
     ld a, l
