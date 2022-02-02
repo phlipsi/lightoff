@@ -15,6 +15,17 @@ song2:
     dw base2, lead2, perc
     dw base3, lead3, perc
     dw base4, lead4, perc
+
+    dw base,  lead,  perc
+    dw base5, lead5, perc
+    dw base6, lead6, perc
+    dw base7, lead7, perc7
+
+    dw base,  lead8,  perc
+    dw base2, lead9, perc
+    dw base3, lead9, perc
+    dw base4, lead10, perc
+
     dw base,  lead,  perc
     dw base5, lead5, perc
     dw base6, lead6, perc
@@ -116,6 +127,24 @@ perc7:
     db NULL, NULL, NULL, NULL
     db NULL, NULL, NULL, SN
     db SN, NULL, SN, NULL
+
+lead8:
+    db NULL,      NULL,      CH3, AIS5,   NULL
+    db CH3, G5,   NULL,      CH3, AIS5,   NULL
+    db NULL,      NULL,      CH3, G5,     NULL
+    db CH3, AIS5, NULL,      CH3, G5,     NULL
+
+lead9:
+    db NULL, NULL, CH3, FIS5, NULL
+    db CH3, A5, NULL, CH3, FIS5, NULL
+    db NULL, NULL, CH3, FIS5, NULL
+    db CH3, C6, NULL, CH3, FIS5, NULL
+
+lead10:
+    db NULL,      NULL,      CH3, G5,     NULL
+    db CH3, AIS5, NULL,      CH3, G5,     NULL
+    db NULL,      NULL,      CH3, AIS5,   NULL
+    db CH3, D6,   NULL,      CH3, FIS6,   NULL
 
 section "SONG2_LOADER", rom0
 
