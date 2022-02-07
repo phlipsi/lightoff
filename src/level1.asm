@@ -119,6 +119,7 @@ level1::
     call move_camera_to_player
     call wait_vblank
     call update_camera
+    ;call display_debug_block
     call draw_player
     call draw_key
     jr .loop

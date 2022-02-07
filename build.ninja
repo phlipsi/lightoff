@@ -18,7 +18,7 @@ rule gfx
 
 build build/door.o: asm src/door.asm
 build build/eye.o: asm src/eye.asm
-build build/intro.o: asm src/intro.asm | build/lightoff.bin
+build build/intro.o: asm src/intro.asm | build/lightoff.bin assets/intro.tilemap
 build build/joypad.o: asm src/joypad.asm
 build build/header.o: asm src/header.asm
 build build/key.o: asm src/key.asm

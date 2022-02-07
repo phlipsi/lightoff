@@ -431,6 +431,11 @@ move_player::
     ld a, [PLAYER_Y + 1]
     ld c, a
     call get_block_offset_at_position
+    ;push hl
+    ;ld de, -32 * 2
+    ;add hl, de
+    ;call update_debug_block
+    ;pop hl
     ld de, SCREEN
     add hl, de
     ld a, [hl]
@@ -457,41 +462,42 @@ move_player::
     ld [PLAYER_STANDING], a
 
 .check_left:
-    ld de, $ffdf
+    push hl
+    ld de, -33
     add hl, de
     ld a, [hl]
     bit 7, a
+    pop hl
     jr z, .check_right
     ld a, b
     add $8
     ld [PLAYER_X + 1], a
     ld a, 0
     ld [PLAYER_X], a
-    ld a, 0
-    ld [PLAYER_VX + 1], a
-    ld [PLAYER_VX], a
     jr .check_top
 
 .check_right:
-    ld de, $0002
+    push hl
+    ld de, -31
     add hl, de
     ld a, [hl]
     bit 7, a
+    pop hl
     jr z, .check_top
     ld a, b
     ld [PLAYER_X + 1], a
     ld a, 0
     ld [PLAYER_X], a
-    ld a, 0
-    ld [PLAYER_VX + 1], a
-    ld [PLAYER_VX], a
 
 .check_top:
-    ld de, $ffdf
+    push hl
+    ld de, -32 * 2
     add hl, de
     ld a, [hl]
     bit 7, a
+    pop hl
     jr z, .check_key
+    push af
     ld a, c
     add $8
     ld [PLAYER_Y + 1], a
@@ -501,7 +507,7 @@ move_player::
     ld [PLAYER_VY + 1], a
     ld [PLAYER_VY], a
 
-    ld a, [hl]
+    pop af
     cp $99
     jr z, .got_eye
     cp $98

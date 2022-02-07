@@ -7,6 +7,10 @@ CAMERA_X:: DS 1
 CAMERA_Y:: DS 1
 MAX_CAMERA_X:: DS 1
 MAX_CAMERA_Y:: DS 1
+DEBUG_BLOCK_LOW: DS 1
+DEBUG_BLOCK_HIGH: DS 1
+NEW_DEBUG_BLOCK_LOW: DS 1
+NEW_DEBUG_BLOCK_HIGH: DS 1
 
 section "SCREEN", rom0
 
@@ -128,3 +132,34 @@ display_screen::
     ld de, SCREEN
     ld bc, 32 * 32
     jp copy_memory
+
+update_debug_block::
+    ld a, l
+    ld [NEW_DEBUG_BLOCK_LOW], a
+    ld a, h
+    ld [NEW_DEBUG_BLOCK_HIGH], a
+    ret
+
+display_debug_block::
+    ld a, [DEBUG_BLOCK_LOW]
+    ld l, a
+    ld a, [DEBUG_BLOCK_HIGH]
+    ld h, a
+    push hl
+    ld de, SCREEN
+    add hl, de
+    ld a, [hl]
+    pop hl
+    ld de, _SCRN0
+    add hl, de
+    ld [hl], a
+    ld a, [NEW_DEBUG_BLOCK_HIGH]
+    ld [DEBUG_BLOCK_HIGH], a
+    ld h, a
+    ld a, [NEW_DEBUG_BLOCK_LOW]
+    ld [DEBUG_BLOCK_LOW], a
+    ld l, a
+    ld de, _SCRN0
+    add hl, de
+    ld [hl], $62
+    ret
