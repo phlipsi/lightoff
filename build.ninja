@@ -1,20 +1,16 @@
-rgbds = C:/Program Files/RGBDS
-rgbasm = $rgbds/rgbasm.exe
-rgblink = $rgbds/rgblink.exe
-rgbfix = $rgbds/rgbfix.exe
-rgbgfx = $rgbds/rgbgfx.exe
+shell = cmd /c
 flags = -i assets -i hardware -i build -i src
 fix_flags = -p0 -v -m MBC1
 
 rule asm
-    command = $rgbasm $flags -o $out $in
+    command = rgbasm $flags -o $out $in
 
 rule link
-    command = cmd /c ""$rgblink" -o $out -n $symbol $in && "$rgbfix" $fix_flags $out"
+    command = $shell "rgblink -o $out -n $symbol $in && rgbfix $fix_flags $out"
     description = linking $out
 
 rule gfx
-    command = $rgbgfx -o $out $in
+    command = rgbgfx -o $out $in
 
 build build/door.o: asm src/door.asm
 build build/eye.o: asm src/eye.asm
